@@ -605,12 +605,98 @@
 
   .ov-sub { font-size: 0.78rem; color: var(--text2); margin-top: 4px; }
 
+  /* ===== MOBILE ===== */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    transition: background 0.15s;
+  }
+  .hamburger:hover { background: var(--surface2); }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: all 0.25s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--surface);
+    z-index: 99;
+    padding: 1.5rem;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+  }
+  .mobile-menu.open { display: flex; }
+
+  .mobile-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    transition: background 0.15s;
+  }
+  .mobile-nav-item:hover { background: var(--surface2); }
+  .mobile-nav-item.active { background: var(--text); color: var(--bg); }
+  .mobile-nav-icon { font-size: 1.3rem; width: 28px; text-align: center; }
+  .mobile-nav-label { flex: 1; }
+
   @media (max-width: 768px) {
     .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
     .grid-2 { grid-template-columns: 1fr; }
-    nav { padding: 0 1rem; }
     .nav-tabs { display: none; }
+    .hamburger { display: flex; }
+    .nav-date { display: none; }
+    nav { padding: 0 1rem; }
     main { padding: 1rem; }
+    .page-header h1 { font-size: 1.6rem; }
+    .metric-value { font-size: 1.8rem; }
+    .input-row { flex-direction: column; gap: 0; }
+    .input-row .form-group { width: 100%; }
+    .card { padding: 1.1rem; }
+    .inner-tabs { overflow-x: auto; padding-bottom: 0.5rem; flex-wrap: nowrap; }
+    .inner-tab { white-space: nowrap; flex-shrink: 0; }
+    .habits-grid { grid-template-columns: repeat(2, 1fr); }
+    #overviewCards { grid-template-columns: repeat(2, 1fr) !important; }
+    .flex-between { flex-wrap: wrap; gap: 8px; }
+    .btn { padding: 10px 16px; min-height: 44px; }
+    .form-group input, .form-group select, .form-group textarea { min-height: 44px; font-size: 16px; }
+    .mood-btn { width: 46px; height: 46px; }
+  }
+
+  @media (max-width: 400px) {
+    .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+    #overviewCards { grid-template-columns: 1fr 1fr !important; }
   }
 </style>
 </head>
@@ -627,11 +713,50 @@
     <button class="nav-tab" onclick="showSection('relaciones', this)">Relaciones</button>
     <button class="nav-tab" onclick="showSection('habitos', this)">Hábitos</button>
   </div>
-  <div style="display:flex;align-items:center;gap:1rem">
+  <div style="display:flex;align-items:center;gap:0.75rem">
     <span id="sync-status" style="font-size:0.75rem;font-weight:500;color:var(--text3);transition:color .3s">● Cargando…</span>
     <div class="nav-date" id="navDate"></div>
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-nav-item active" id="mob-overview" onclick="mobileNav('overview')">
+    <span class="mobile-nav-icon">🌅</span>
+    <span class="mobile-nav-label">Hoy</span>
+  </button>
+  <button class="mobile-nav-item" id="mob-finanzas" onclick="mobileNav('finanzas')">
+    <span class="mobile-nav-icon">💰</span>
+    <span class="mobile-nav-label">Finanzas</span>
+  </button>
+  <button class="mobile-nav-item" id="mob-ejercicio" onclick="mobileNav('ejercicio')">
+    <span class="mobile-nav-icon">🏋️</span>
+    <span class="mobile-nav-label">Ejercicio</span>
+  </button>
+  <button class="mobile-nav-item" id="mob-cuerpo" onclick="mobileNav('cuerpo')">
+    <span class="mobile-nav-icon">🫀</span>
+    <span class="mobile-nav-label">Cuerpo</span>
+  </button>
+  <button class="mobile-nav-item" id="mob-mente" onclick="mobileNav('mente')">
+    <span class="mobile-nav-icon">🧘</span>
+    <span class="mobile-nav-label">Mente</span>
+  </button>
+  <button class="mobile-nav-item" id="mob-relaciones" onclick="mobileNav('relaciones')">
+    <span class="mobile-nav-icon">❤️</span>
+    <span class="mobile-nav-label">Relaciones</span>
+  </button>
+  <button class="mobile-nav-item" id="mob-habitos" onclick="mobileNav('habitos')">
+    <span class="mobile-nav-icon">✅</span>
+    <span class="mobile-nav-label">Hábitos</span>
+  </button>
+  <div style="margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border)">
+    <div id="navDate-mobile" style="font-size:0.82rem;color:var(--text2)"></div>
+    <div id="sync-status-mobile" style="font-size:0.75rem;color:var(--text3);margin-top:4px"></div>
+  </div>
+</div>
 
 <main>
 
@@ -1472,15 +1597,16 @@ let medSeconds = 300;
 let medTotalSeconds = 300;
 let isSyncing = false;
 
-// ===== SYNC STATUS UI =====
 function setSyncStatus(status) {
-  const el = document.getElementById('sync-status');
-  if (!el) return;
   const icons = { syncing: '⟳', ok: '●', error: '!' };
   const colors = { syncing: 'var(--text3)', ok: 'var(--accent-fin)', error: 'var(--accent-rel)' };
   const labels = { syncing: 'Guardando…', ok: 'Sincronizado', error: 'Sin conexión' };
-  el.textContent = icons[status] + ' ' + labels[status];
-  el.style.color = colors[status];
+  const text = icons[status] + ' ' + labels[status];
+  const color = colors[status];
+  const el = document.getElementById('sync-status');
+  if (el) { el.textContent = text; el.style.color = color; }
+  const mob = document.getElementById('sync-status-mobile');
+  if (mob) { mob.textContent = text; mob.style.color = color; }
 }
 
 // ===== PERSISTENCE =====
@@ -1533,6 +1659,28 @@ function load() {
     });
 }
 
+// ===== MOBILE MENU =====
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  const open = menu.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+
+function mobileNav(id) {
+  // Close menu
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburgerBtn').classList.remove('open');
+  document.body.style.overflow = '';
+  // Update active state in mobile menu
+  document.querySelectorAll('.mobile-nav-item').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.getElementById('mob-' + id);
+  if (activeBtn) activeBtn.classList.add('active');
+  // Navigate
+  showSection(id, null);
+}
+
 // ===== NAVIGATION =====
 function showSection(id, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -1545,6 +1693,10 @@ function showSection(id, btn) {
       t.classList.toggle('active', t.textContent.toLowerCase().includes(id.substring(0,4)) || (id==='overview' && t.textContent==='Hoy'));
     });
   }
+  // Sync mobile menu active state
+  document.querySelectorAll('.mobile-nav-item').forEach(b => b.classList.remove('active'));
+  const mob = document.getElementById('mob-' + id);
+  if (mob) mob.classList.add('active');
   renderAll();
 }
 
@@ -1559,7 +1711,10 @@ function showInner(prefix, id, btn) {
 function setDate() {
   const d = new Date();
   const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
-  document.getElementById('navDate').textContent = d.toLocaleDateString('es-MX', opts);
+  const dateStr = d.toLocaleDateString('es-MX', opts);
+  document.getElementById('navDate').textContent = dateStr;
+  const mobDate = document.getElementById('navDate-mobile');
+  if (mobDate) mobDate.textContent = dateStr;
   const h = d.getHours();
   let greet = h < 12 ? 'Buenos días' : h < 18 ? 'Buenas tardes' : 'Buenas noches';
   document.getElementById('overviewGreeting').textContent = `${greet}. Un día más para construir la vida que quieres.`;

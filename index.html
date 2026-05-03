@@ -8,33 +8,34 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f7f4ef;
-    --surface: #ffffff;
-    --surface2: #f0ece4;
-    --border: rgba(60,50,30,0.12);
-    --border2: rgba(60,50,30,0.22);
-    --text: #1a1714;
-    --text2: #6b6258;
-    --text3: #a89e94;
-    --accent-fin: #2d6a4f;
-    --accent-fin-bg: #d8f3dc;
-    --accent-ej: #c77dff;
-    --accent-ej-bg: #f3e8ff;
-    --accent-ej-dark: #7b2d8b;
-    --accent-ment: #e9c46a;
-    --accent-ment-bg: #fff8e1;
-    --accent-ment-dark: #7a5c00;
-    --accent-rel: #e76f51;
-    --accent-rel-bg: #fde8e0;
-    --accent-rel-dark: #8b2500;
-    --accent-hab: #457b9d;
-    --accent-hab-bg: #ddf0fa;
-    --accent-hab-dark: #1d3d52;
-    --accent-cuerpo: #c1440e;
-    --accent-cuerpo-bg: #ffeae0;
-    --accent-cuerpo-dark: #7a2500;
+    --bg: #0d1b2a;
+    --surface: #162032;
+    --surface2: #1e2d40;
+    --border: rgba(100,160,220,0.10);
+    --border2: rgba(100,160,220,0.20);
+    --text: #e8f0f8;
+    --text2: #8aaabe;
+    --text3: #4d6a82;
+    --accent-fin: #4ade80;
+    --accent-fin-bg: #0f2d1e;
+    --accent-ej: #c084fc;
+    --accent-ej-bg: #1e0f33;
+    --accent-ej-dark: #c084fc;
+    --accent-ment: #fbbf24;
+    --accent-ment-bg: #2d1f00;
+    --accent-ment-dark: #fbbf24;
+    --accent-rel: #fb7185;
+    --accent-rel-bg: #2d0f18;
+    --accent-rel-dark: #fb7185;
+    --accent-hab: #38bdf8;
+    --accent-hab-bg: #0c2030;
+    --accent-hab-dark: #38bdf8;
+    --accent-cuerpo: #fb923c;
+    --accent-cuerpo-bg: #2d1200;
+    --accent-cuerpo-dark: #fb923c;
+    --radius: 16px;
     --radius-sm: 10px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -710,7 +711,6 @@
     <button class="nav-tab" onclick="showSection('ejercicio', this)">Ejercicio</button>
     <button class="nav-tab" onclick="showSection('cuerpo', this)">Cuerpo</button>
     <button class="nav-tab" onclick="showSection('mente', this)">Mente</button>
-    <button class="nav-tab" onclick="showSection('relaciones', this)">Relaciones</button>
     <button class="nav-tab" onclick="showSection('habitos', this)">Hábitos</button>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem">
@@ -743,10 +743,6 @@
   <button class="mobile-nav-item" id="mob-mente" onclick="mobileNav('mente')">
     <span class="mobile-nav-icon">🧘</span>
     <span class="mobile-nav-label">Mente</span>
-  </button>
-  <button class="mobile-nav-item" id="mob-relaciones" onclick="mobileNav('relaciones')">
-    <span class="mobile-nav-icon">❤️</span>
-    <span class="mobile-nav-label">Relaciones</span>
   </button>
   <button class="mobile-nav-item" id="mob-habitos" onclick="mobileNav('habitos')">
     <span class="mobile-nav-icon">✅</span>
@@ -855,7 +851,7 @@
       <div class="card">
         <div class="card-title">Saldo Total</div>
         <div class="metric-value accent-fin" id="fin-balance">$0</div>
-        <div class="metric-sub">actualizado ahora</div>
+        <div class="metric-sub" id="fin-balance-sub">incluye ahorros</div>
       </div>
       <div class="card">
         <div class="card-title">Ingresos del Mes</div>
@@ -951,7 +947,7 @@
   <section id="ejercicio" class="section">
     <div class="page-header">
       <h1>Ejercicio</h1>
-      <p>Registra tus entrenamientos y mide tu progreso físico.</p>
+      <p>Registra tus entrenamientos con ejercicios, series y pesos.</p>
     </div>
 
     <div class="grid-4" style="margin-bottom:1.5rem">
@@ -982,25 +978,25 @@
 
     <div class="grid-2">
       <div class="card">
-        <div class="flex-between"><h2>Registrar sesión</h2></div>
-        <div class="form-group">
-          <label>Tipo de entrenamiento</label>
-          <select id="ej-type">
-            <option>🏋️ Fuerza</option>
-            <option>🏃 Cardio</option>
-            <option>🧘 Yoga / Flexibilidad</option>
-            <option>🚴 Ciclismo</option>
-            <option>🏊 Natación</option>
-            <option>⚽ Deporte</option>
-            <option>🚶 Caminata</option>
-            <option>💪 Calistenia</option>
-            <option>🥊 Artes Marciales</option>
-          </select>
-        </div>
+        <div class="flex-between"><h2>Nueva sesión</h2></div>
         <div class="input-row" style="margin-bottom:1rem">
           <div class="form-group">
+            <label>Tipo</label>
+            <select id="ej-type">
+              <option>🏋️ Fuerza</option>
+              <option>🏃 Cardio</option>
+              <option>🧘 Yoga / Flexibilidad</option>
+              <option>🚴 Ciclismo</option>
+              <option>🏊 Natación</option>
+              <option>⚽ Deporte</option>
+              <option>🚶 Caminata</option>
+              <option>💪 Calistenia</option>
+              <option>🥊 Artes Marciales</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label>Duración (min)</label>
-            <input type="number" id="ej-duration" placeholder="45">
+            <input type="number" id="ej-duration" placeholder="60">
           </div>
           <div class="form-group">
             <label>Intensidad</label>
@@ -1011,11 +1007,39 @@
             </select>
           </div>
         </div>
-        <div class="form-group">
-          <label>Notas</label>
-          <textarea id="ej-notes" placeholder="¿Cómo te sentiste? ¿Qué ejercicios hiciste?"></textarea>
+
+        <!-- EXERCISE LIST BUILDER -->
+        <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:0.75rem">Ejercicios de la sesión</div>
+        <div id="ej-exercises-list" style="margin-bottom:0.75rem"></div>
+
+        <!-- ADD ONE EXERCISE ROW -->
+        <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem">
+          <div class="form-group" style="margin-bottom:0.75rem">
+            <label>Ejercicio</label>
+            <input type="text" id="ej-ex-name" placeholder="Ej: Press banca, Sentadilla, Pull-up...">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:flex-end">
+            <div class="form-group" style="margin-bottom:0">
+              <label>Series</label>
+              <input type="number" id="ej-ex-sets" placeholder="4" min="1">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label>Reps</label>
+              <input type="number" id="ej-ex-reps" placeholder="10" min="1">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label>Peso (kg)</label>
+              <input type="number" id="ej-ex-weight" placeholder="60" step="0.5">
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="addExerciseRow()" style="white-space:nowrap;height:44px">+ Agregar</button>
+          </div>
         </div>
-        <button class="btn btn-primary" onclick="addWorkout()" style="width:100%">Registrar sesión</button>
+
+        <div class="form-group">
+          <label>Notas de la sesión</label>
+          <textarea id="ej-notes" placeholder="¿Cómo te sentiste? PR, lesiones, observaciones..."></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="addWorkout()" style="width:100%">Guardar sesión</button>
       </div>
 
       <div class="card">
@@ -1123,90 +1147,6 @@
           <hr class="section-sep">
           <div class="card-title">Historial de sesiones</div>
           <div id="med-history"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== RELACIONES ===== -->
-  <section id="relaciones" class="section">
-    <div class="page-header">
-      <h1>Relaciones</h1>
-      <p>Mantén vivos los vínculos que te importan.</p>
-    </div>
-
-    <div class="inner-tabs">
-      <button class="inner-tab active" onclick="showInner('rel', 'contactos', this)">Contactos</button>
-      <button class="inner-tab" onclick="showInner('rel', 'notas', this)">Notas de conexión</button>
-    </div>
-
-    <!-- CONTACTOS -->
-    <div id="rel-contactos" class="inner-panel active">
-      <div class="grid-2">
-        <div class="card">
-          <div class="flex-between"><h2>Agregar persona</h2></div>
-          <div class="form-group">
-            <label>Nombre</label>
-            <input type="text" id="rel-name" placeholder="Ej: María López">
-          </div>
-          <div class="input-row" style="margin-bottom:1rem">
-            <div class="form-group">
-              <label>Relación</label>
-              <select id="rel-type">
-                <option value="familia">👨‍👩‍👧 Familia</option>
-                <option value="amigo">👥 Amigo/a</option>
-                <option value="pareja">❤️ Pareja</option>
-                <option value="colega">💼 Colega</option>
-                <option value="mentor">🌟 Mentor/a</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Nota / Último contacto</label>
-            <textarea id="rel-note" placeholder="¿De qué hablaron? ¿Qué recuerdas?"></textarea>
-          </div>
-          <div class="form-group">
-            <label>Recordatorio de contacto</label>
-            <select id="rel-reminder">
-              <option value="">Sin recordatorio</option>
-              <option value="semanal">Cada semana</option>
-              <option value="quincenal">Cada 2 semanas</option>
-              <option value="mensual">Cada mes</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" onclick="addContact()" style="width:100%">Agregar</button>
-        </div>
-        <div class="card">
-          <div class="flex-between">
-            <h2>Mi círculo</h2>
-            <button class="btn btn-sm btn-danger" onclick="clearContacts()">Limpiar</button>
-          </div>
-          <div id="rel-list"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- NOTAS DE CONEXIÓN -->
-    <div id="rel-notas" class="inner-panel">
-      <div class="grid-2">
-        <div class="card">
-          <div class="flex-between"><h2>Nueva nota</h2></div>
-          <div class="form-group">
-            <label>Persona</label>
-            <input type="text" id="cn-person" placeholder="¿Con quién fue?">
-          </div>
-          <div class="form-group">
-            <label>¿Qué pasó?</label>
-            <textarea id="cn-note" rows="4" placeholder="Un café, una llamada, un mensaje especial..."></textarea>
-          </div>
-          <button class="btn btn-primary" onclick="addConnectionNote()" style="width:100%">Guardar nota</button>
-        </div>
-        <div class="card">
-          <div class="flex-between">
-            <h2>Notas recientes</h2>
-            <button class="btn btn-sm btn-danger" onclick="clearConnectionNotes()">Limpiar</button>
-          </div>
-          <div id="cn-list"></div>
         </div>
       </div>
     </div>
@@ -1784,13 +1724,16 @@ function renderFinance() {
   const monthTx = state.transactions.filter(t => t.date.startsWith(month));
   const income = monthTx.filter(t => t.type === 'ingreso').reduce((a, t) => a + t.amount, 0);
   const expenses = monthTx.filter(t => t.type === 'gasto').reduce((a, t) => a + t.amount, 0);
-  const balance = state.transactions.reduce((a, t) => t.type === 'ingreso' ? a + t.amount : a - t.amount, 0);
+  const txBalance = state.transactions.reduce((a, t) => t.type === 'ingreso' ? a + t.amount : a - t.amount, 0);
+  const totalSaved = state.goals.reduce((a, g) => a + (g.saved || 0), 0);
+  const balance = txBalance + totalSaved;
 
   setText('fin-balance', fmt(balance));
   setText('fin-income', fmt(income));
   setText('fin-expenses', fmt(expenses));
   setText('fin-income-count', `${monthTx.filter(t=>t.type==='ingreso').length} transacciones`);
   setText('fin-expense-count', `${monthTx.filter(t=>t.type==='gasto').length} transacciones`);
+  setText('fin-balance-sub', totalSaved > 0 ? `transacciones + ${fmt(totalSaved)} ahorros` : 'sin metas de ahorro aún');
   document.getElementById('fin-balance').style.color = balance >= 0 ? 'var(--accent-fin)' : 'var(--accent-rel)';
 
   // TX LIST
@@ -1852,13 +1795,51 @@ function renderFinance() {
 }
 
 // ===== EJERCICIO =====
+let currentExercises = [];
+
+function addExerciseRow() {
+  const name = document.getElementById('ej-ex-name').value.trim();
+  const sets = parseInt(document.getElementById('ej-ex-sets').value) || 0;
+  const reps = parseInt(document.getElementById('ej-ex-reps').value) || 0;
+  const weight = parseFloat(document.getElementById('ej-ex-weight').value) || 0;
+  if (!name) return;
+  currentExercises.push({ name, sets, reps, weight });
+  document.getElementById('ej-ex-name').value = '';
+  document.getElementById('ej-ex-sets').value = '';
+  document.getElementById('ej-ex-reps').value = '';
+  document.getElementById('ej-ex-weight').value = '';
+  renderExerciseRows();
+  document.getElementById('ej-ex-name').focus();
+}
+
+function removeExerciseRow(i) {
+  currentExercises.splice(i, 1);
+  renderExerciseRows();
+}
+
+function renderExerciseRows() {
+  const el = document.getElementById('ej-exercises-list');
+  if (!currentExercises.length) { el.innerHTML = ''; return; }
+  el.innerHTML = currentExercises.map((ex, i) => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface2);border-radius:8px;margin-bottom:6px">
+      <div style="flex:1">
+        <span style="font-weight:600;font-size:0.88rem">${ex.name}</span>
+        <span style="font-size:0.78rem;color:var(--text2);margin-left:10px">${ex.sets > 0 ? ex.sets + ' series' : ''} ${ex.reps > 0 ? '× ' + ex.reps + ' reps' : ''} ${ex.weight > 0 ? '· ' + ex.weight + ' kg' : ''}</span>
+      </div>
+      <button class="btn btn-danger" onclick="removeExerciseRow(${i})" style="padding:3px 8px;font-size:0.72rem">✕</button>
+    </div>
+  `).join('');
+}
+
 function addWorkout() {
   const type = document.getElementById('ej-type').value;
   const duration = parseInt(document.getElementById('ej-duration').value) || 0;
   const intensity = document.getElementById('ej-intensity').value;
   const notes = document.getElementById('ej-notes').value.trim();
   if (!duration) return;
-  state.workouts.unshift({ id: Date.now(), type, duration, intensity, notes, date: TODAY });
+  state.workouts.unshift({ id: Date.now(), type, duration, intensity, notes, exercises: [...currentExercises], date: TODAY });
+  currentExercises = [];
+  renderExerciseRows();
   save();
   document.getElementById('ej-duration').value = '';
   document.getElementById('ej-notes').value = '';
@@ -1888,13 +1869,25 @@ function renderExercise() {
   const list = document.getElementById('ej-list');
   if (!state.workouts.length) { list.innerHTML = '<div class="empty">Sin sesiones registradas</div>'; return; }
   list.innerHTML = state.workouts.slice(0, 15).map(w => `
-    <div class="workout-entry">
-      <div class="workout-icon">${w.type.split(' ')[0]}</div>
-      <div style="flex:1">
-        <div class="list-item-name">${w.type}</div>
-        <div class="list-item-sub">${w.date} · ${w.duration} min · ${w.intensity}</div>
-        ${w.notes ? `<div style="font-size:0.78rem;color:var(--text2);margin-top:3px">${w.notes}</div>` : ''}
+    <div class="workout-entry" style="flex-direction:column;align-items:flex-start;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px;width:100%">
+        <div class="workout-icon">${w.type.split(' ')[0]}</div>
+        <div style="flex:1">
+          <div class="list-item-name">${w.type}</div>
+          <div class="list-item-sub">${w.date} · ${w.duration} min · ${w.intensity}</div>
+        </div>
       </div>
+      ${w.exercises && w.exercises.length ? `
+        <div style="width:100%;padding-left:50px">
+          ${w.exercises.map(ex => `
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;padding:3px 0;border-bottom:1px solid var(--border)">
+              <span style="font-weight:500;color:var(--text)">${ex.name}</span>
+              <span style="color:var(--text2)">${ex.sets > 0 ? ex.sets + 's' : ''} ${ex.reps > 0 ? '× ' + ex.reps : ''} ${ex.weight > 0 ? '· ' + ex.weight + 'kg' : ''}</span>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+      ${w.notes ? `<div style="padding-left:50px;font-size:0.78rem;color:var(--text2)">${w.notes}</div>` : ''}
     </div>
   `).join('');
 }
@@ -2547,7 +2540,6 @@ function renderAll() {
   renderJournal();
   renderMoodHistory();
   renderMeditation();
-  renderRelaciones();
   renderHabits();
   renderCuerpo();
   renderOverview();

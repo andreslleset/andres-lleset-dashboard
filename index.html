@@ -606,7 +606,80 @@
 
   .ov-sub { font-size: 0.78rem; color: var(--text2); margin-top: 4px; }
 
-  /* ===== MOBILE ===== */
+  /* ===== LOGIN SCREEN ===== */
+  #login-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  #login-screen.hidden { display: none; }
+
+  .login-card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: var(--shadow);
+  }
+
+  .login-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
+  }
+
+  .login-brand span { font-style: italic; color: var(--accent-fin); }
+
+  .login-sub {
+    font-size: 0.88rem;
+    color: var(--text2);
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .btn-google:hover { background: var(--border2); }
+
+  .btn-google svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .login-error {
+    font-size: 0.8rem;
+    color: var(--accent-rel);
+    margin-top: 1rem;
+    min-height: 1.2em;
+  }
+
+  #app-wrapper { display: none; }
+  #app-wrapper.visible { display: block; }
+</style>
   .hamburger {
     display: none;
     flex-direction: column;
@@ -703,6 +776,27 @@
 </head>
 <body>
 
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-brand">Andres <span>Lleset</span></div>
+    <div class="login-sub">Tu dashboard personal</div>
+    <button class="btn-google" onclick="signInWithGoogle()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Entrar con Google
+    </button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- APP WRAPPER -->
+<div id="app-wrapper">
+
 <nav>
   <div class="nav-brand">Andres <span>Lleset</span></div>
   <div class="nav-tabs" id="navTabs">
@@ -716,6 +810,7 @@
   <div style="display:flex;align-items:center;gap:0.75rem">
     <span id="sync-status" style="font-size:0.75rem;font-weight:500;color:var(--text3);transition:color .3s">● Cargando…</span>
     <div class="nav-date" id="navDate"></div>
+    <button onclick="signOut()" style="font-size:0.75rem;color:var(--text3);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px" title="Cerrar sesión">⏻</button>
     <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menú">
       <span></span><span></span><span></span>
     </button>
@@ -751,6 +846,7 @@
   <div style="margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border)">
     <div id="navDate-mobile" style="font-size:0.82rem;color:var(--text2)"></div>
     <div id="sync-status-mobile" style="font-size:0.75rem;color:var(--text3);margin-top:4px"></div>
+    <button onclick="signOut();toggleMenu()" style="margin-top:1rem;font-size:0.85rem;color:var(--accent-rel);background:none;border:1px solid var(--accent-rel-bg);border-radius:8px;padding:8px 16px;cursor:pointer;width:100%">⏻ Cerrar sesión</button>
   </div>
 </div>
 
@@ -1494,9 +1590,12 @@
 
 </main>
 
+</div> <!-- /app-wrapper -->
+
 <!-- Firebase compat (no requiere type=module, funciones quedan globales) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
 <script>
 // ===== FIREBASE =====
@@ -1511,7 +1610,45 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const docRef = db.collection("dashboard").doc("andres");
+const auth = firebase.auth();
+
+// ===== AUTH =====
+const ALLOWED_EMAIL = 'andreslleset@gmail.com'; // <-- tu email de Google
+
+function signInWithGoogle() {
+  document.getElementById('login-error').textContent = '';
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch(err => {
+    document.getElementById('login-error').textContent = 'Error al iniciar sesión. Intenta de nuevo.';
+    console.error(err);
+  });
+}
+
+function signOut() {
+  auth.signOut();
+}
+
+auth.onAuthStateChanged(user => {
+  if (user && user.email === ALLOWED_EMAIL) {
+    // Authorized — show app
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('app-wrapper').classList.add('visible');
+    // Set Firestore doc per user
+    window.docRef = db.collection("dashboard").doc("andres");
+    setDate();
+    load();
+  } else if (user) {
+    // Signed in but not allowed
+    auth.signOut();
+    document.getElementById('login-error').textContent = 'Esta cuenta no tiene acceso.';
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.getElementById('app-wrapper').classList.remove('visible');
+  } else {
+    // Not signed in
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.getElementById('app-wrapper').classList.remove('visible');
+  }
+});
 
 // ===== STATE =====
 let state = {
@@ -1552,19 +1689,20 @@ function setSyncStatus(status) {
 // ===== PERSISTENCE =====
 let saveTimer = null;
 function save() {
+  if (!window.docRef) return;
   localStorage.setItem('vida_state_backup', JSON.stringify(state));
   isSyncing = true;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
     setSyncStatus('syncing');
-    docRef.set(state)
+    window.docRef.set(state)
       .then(() => { setSyncStatus('ok'); isSyncing = false; })
       .catch(e => { console.error('Firebase save error:', e); setSyncStatus('error'); isSyncing = false; });
   }, 600);
 }
 
 function startRealtimeSync() {
-  docRef.onSnapshot((snap) => {
+  window.docRef.onSnapshot((snap) => {
     if (!snap.exists) return;
     if (!isSyncing) {
       state = { ...state, ...snap.data() };
@@ -1578,12 +1716,13 @@ function startRealtimeSync() {
 }
 
 function load() {
+  if (!window.docRef) return;
   setSyncStatus('syncing');
   const backup = localStorage.getItem('vida_state_backup');
   if (backup) {
     try { state = { ...state, ...JSON.parse(backup) }; renderAll(); } catch(e) {}
   }
-  docRef.get()
+  window.docRef.get()
     .then(snap => {
       if (snap.exists) {
         state = { ...state, ...snap.data() };
@@ -2546,8 +2685,7 @@ function renderAll() {
 }
 
 // ===== INIT =====
-setDate();
-load();
+// Auth state change handles setDate() and load() automatically
 </script>
 </body>
 </html>

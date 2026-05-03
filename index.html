@@ -1429,11 +1429,12 @@
 
 </main>
 
-<script type="module">
-// ===== FIREBASE =====
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<!-- Firebase compat (no requiere type=module, funciones quedan globales) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
+<script>
+// ===== FIREBASE =====
 const firebaseConfig = {
   apiKey: "AIzaSyBSJK8G8B0YSMnCrkldYWpjkiMDPazEV5Q",
   authDomain: "andres-lleset-dashboard.firebaseapp.com",
@@ -1443,10 +1444,9 @@ const firebaseConfig = {
   appId: "1:732801756763:web:2be9008f3ec35eccd1597e"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const DOC_ID = "andres";
-const docRef = doc(db, "dashboard", DOC_ID);
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const docRef = db.collection("dashboard").doc("andres");
 
 // ===== STATE =====
 let state = {
@@ -1486,33 +1486,22 @@ function setSyncStatus(status) {
 // ===== PERSISTENCE =====
 let saveTimer = null;
 function save() {
-  // Optimistic local backup
   localStorage.setItem('vida_state_backup', JSON.stringify(state));
   isSyncing = true;
-  // Debounce cloud save 600ms to batch rapid changes
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(async () => {
+  saveTimer = setTimeout(() => {
     setSyncStatus('syncing');
-    try {
-      await setDoc(docRef, state);
-      setSyncStatus('ok');
-    } catch(e) {
-      console.error('Firebase save error:', e);
-      setSyncStatus('error');
-    } finally {
-      isSyncing = false;
-    }
+    docRef.set(state)
+      .then(() => { setSyncStatus('ok'); isSyncing = false; })
+      .catch(e => { console.error('Firebase save error:', e); setSyncStatus('error'); isSyncing = false; });
   }, 600);
 }
 
-// Real-time listener — fires whenever another device saves
 function startRealtimeSync() {
-  onSnapshot(docRef, (snap) => {
-    if (!snap.exists()) return;
-    const remote = snap.data();
-    // Merge remote into state, avoid overwriting during local edits
+  docRef.onSnapshot((snap) => {
+    if (!snap.exists) return;
     if (!isSyncing) {
-      state = { ...state, ...remote };
+      state = { ...state, ...snap.data() };
       renderAll();
       setSyncStatus('ok');
     }
@@ -1522,25 +1511,26 @@ function startRealtimeSync() {
   });
 }
 
-async function load() {
+function load() {
   setSyncStatus('syncing');
-  // Show local backup instantly while cloud loads
   const backup = localStorage.getItem('vida_state_backup');
   if (backup) {
     try { state = { ...state, ...JSON.parse(backup) }; renderAll(); } catch(e) {}
   }
-  try {
-    const snap = await getDoc(docRef);
-    if (snap.exists()) {
-      state = { ...state, ...snap.data() };
-      renderAll();
-    }
-    setSyncStatus('ok');
-  } catch(e) {
-    console.error('Firebase load error:', e);
-    setSyncStatus('error');
-  }
-  startRealtimeSync();
+  docRef.get()
+    .then(snap => {
+      if (snap.exists) {
+        state = { ...state, ...snap.data() };
+        renderAll();
+      }
+      setSyncStatus('ok');
+      startRealtimeSync();
+    })
+    .catch(e => {
+      console.error('Firebase load error:', e);
+      setSyncStatus('error');
+      startRealtimeSync();
+    });
 }
 
 // ===== NAVIGATION =====

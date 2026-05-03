@@ -1618,7 +1618,7 @@ const ALLOWED_EMAIL = 'andreslleset@gmail.com'; // <-- tu email de Google
 function signInWithGoogle() {
   document.getElementById('login-error').textContent = '';
   const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider).catch(err => {
+  auth.signInWithRedirect(provider).catch(err => {
     document.getElementById('login-error').textContent = 'Error al iniciar sesión. Intenta de nuevo.';
     console.error(err);
   });

@@ -1,0 +1,2336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andres Lleset</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f4ef;
+    --surface: #ffffff;
+    --surface2: #f0ece4;
+    --border: rgba(60,50,30,0.12);
+    --border2: rgba(60,50,30,0.22);
+    --text: #1a1714;
+    --text2: #6b6258;
+    --text3: #a89e94;
+    --accent-fin: #2d6a4f;
+    --accent-fin-bg: #d8f3dc;
+    --accent-ej: #c77dff;
+    --accent-ej-bg: #f3e8ff;
+    --accent-ej-dark: #7b2d8b;
+    --accent-ment: #e9c46a;
+    --accent-ment-bg: #fff8e1;
+    --accent-ment-dark: #7a5c00;
+    --accent-rel: #e76f51;
+    --accent-rel-bg: #fde8e0;
+    --accent-rel-dark: #8b2500;
+    --accent-hab: #457b9d;
+    --accent-hab-bg: #ddf0fa;
+    --accent-hab-dark: #1d3d52;
+    --accent-cuerpo: #c1440e;
+    --accent-cuerpo-bg: #ffeae0;
+    --accent-cuerpo-dark: #7a2500;
+    --radius-sm: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .nav-brand span {
+    font-style: italic;
+    color: var(--accent-fin);
+  }
+
+  .nav-date {
+    font-size: 0.85rem;
+    color: var(--text2);
+    font-weight: 300;
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .nav-tab {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.18s;
+    font-weight: 500;
+  }
+
+  .nav-tab:hover { background: var(--surface2); color: var(--text); }
+
+  .nav-tab.active {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  /* LAYOUT */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* PAGE HEADER */
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .page-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.25rem;
+  }
+
+  .page-header p {
+    color: var(--text2);
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+
+  /* GRID LAYOUTS */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .card-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    margin-bottom: 0.75rem;
+  }
+
+  .metric-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.25rem;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .metric-sub {
+    font-size: 0.82rem;
+    color: var(--text2);
+  }
+
+  .metric-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+
+  .badge-green { background: var(--accent-fin-bg); color: var(--accent-fin); }
+  .badge-red { background: #fde8e0; color: #8b2500; }
+  .badge-yellow { background: var(--accent-ment-bg); color: var(--accent-ment-dark); }
+  .badge-blue { background: var(--accent-hab-bg); color: var(--accent-hab-dark); }
+
+  /* INPUTS */
+  .form-group { margin-bottom: 1rem; }
+
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    background: var(--bg);
+    color: var(--text);
+    transition: border 0.15s;
+    outline: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--text);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 80px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .btn:hover { background: var(--surface2); }
+
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+
+  .btn-danger {
+    background: transparent;
+    color: var(--accent-rel);
+    border-color: var(--accent-rel-bg);
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+
+  .btn-danger:hover { background: var(--accent-rel-bg); }
+
+  .btn-sm {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+
+  /* LIST ITEMS */
+  .list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .list-item:last-child { border-bottom: none; }
+
+  .list-item-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .list-item-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .list-item-name { font-size: 0.9rem; font-weight: 500; }
+  .list-item-sub { font-size: 0.78rem; color: var(--text2); margin-top: 1px; }
+  .list-item-amount { font-family: 'DM Serif Display', serif; font-size: 1.1rem; }
+
+  /* PROGRESS */
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 20px;
+    transition: width 0.4s;
+  }
+
+  /* HABITS GRID */
+  .habits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+
+  .habit-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s;
+    box-shadow: var(--shadow);
+  }
+
+  .habit-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+  .habit-card.done {
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--bg);
+  }
+
+  .habit-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .habit-name { font-size: 0.82rem; font-weight: 600; }
+  .habit-streak { font-size: 0.72rem; color: var(--text3); margin-top: 4px; }
+  .habit-card.done .habit-streak { color: rgba(255,255,255,0.6); }
+
+  /* MOOD */
+  .mood-grid {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+  }
+
+  .mood-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    border: 2px solid var(--border2);
+    background: var(--surface);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mood-btn:hover { transform: scale(1.1); }
+  .mood-btn.selected { border-color: var(--text); background: var(--text); font-size: 1.3rem; }
+
+  /* JOURNAL */
+  .journal-entry {
+    padding: 1.25rem;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+  }
+
+  .journal-entry-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .journal-entry-date { font-size: 0.75rem; color: var(--text3); }
+  .journal-entry-mood { font-size: 1rem; }
+  .journal-entry-text { font-size: 0.88rem; color: var(--text); line-height: 1.6; }
+
+  /* RELATION CONTACT */
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .contact-info { flex: 1; }
+  .contact-name { font-size: 0.9rem; font-weight: 600; }
+  .contact-note { font-size: 0.78rem; color: var(--text2); margin-top: 2px; }
+  .contact-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* SECTION COLOR ACCENTS */
+  .accent-fin { color: var(--accent-fin); }
+  .accent-ej { color: var(--accent-ej-dark); }
+  .accent-ment { color: var(--accent-ment-dark); }
+  .accent-rel { color: var(--accent-rel-dark); }
+  .accent-hab { color: var(--accent-hab-dark); }
+
+  /* OVERVIEW RING */
+  .overview-ring {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+
+  /* MINI CHART */
+  .mini-bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 60px;
+  }
+
+  .mini-bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+    transition: height 0.3s;
+  }
+
+  /* SECTION DIVIDER */
+  .section-sep {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .flex-between h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+
+  /* INPUT ROW */
+  .input-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+  }
+
+  .input-row .form-group { flex: 1; margin-bottom: 0; }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text3);
+    font-size: 0.85rem;
+  }
+
+  /* WORKOUT LOG */
+  .workout-entry {
+    padding: 1rem;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .workout-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--accent-ej-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  /* GOAL BAR */
+  .goal-item {
+    margin-bottom: 1.25rem;
+  }
+
+  .goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+
+  .goal-name { font-size: 0.88rem; font-weight: 500; }
+  .goal-pct { font-size: 0.8rem; color: var(--text2); }
+
+  /* TABS WITHIN SECTION */
+  .inner-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
+  }
+
+  .inner-tab {
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text2);
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+
+  .inner-tab:hover { background: var(--surface2); color: var(--text); }
+  .inner-tab.active { background: var(--text); color: var(--bg); }
+
+  .inner-panel { display: none; }
+  .inner-panel.active { display: block; }
+
+  /* OVERVIEW CARDS */
+  .ov-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.18s;
+  }
+
+  .ov-card:hover { transform: translateY(-3px); }
+
+  .ov-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .ov-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+
+  .ov-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    letter-spacing: -0.03em;
+  }
+
+  .ov-sub { font-size: 0.78rem; color: var(--text2); margin-top: 4px; }
+
+  @media (max-width: 768px) {
+    .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-2 { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .nav-tabs { display: none; }
+    main { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Andres <span>Lleset</span></div>
+  <div class="nav-tabs" id="navTabs">
+    <button class="nav-tab active" onclick="showSection('overview', this)">Hoy</button>
+    <button class="nav-tab" onclick="showSection('finanzas', this)">Finanzas</button>
+    <button class="nav-tab" onclick="showSection('ejercicio', this)">Ejercicio</button>
+    <button class="nav-tab" onclick="showSection('cuerpo', this)">Cuerpo</button>
+    <button class="nav-tab" onclick="showSection('mente', this)">Mente</button>
+    <button class="nav-tab" onclick="showSection('relaciones', this)">Relaciones</button>
+    <button class="nav-tab" onclick="showSection('habitos', this)">Hábitos</button>
+  </div>
+  <div class="nav-date" id="navDate"></div>
+</nav>
+
+<main>
+
+  <!-- ===== OVERVIEW ===== -->
+  <section id="overview" class="section active">
+    <div class="page-header">
+      <h1>¿Cómo va todo hoy?</h1>
+      <p id="overviewGreeting">Un día más para construir la vida que quieres.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-bottom:1.5rem" id="overviewCards">
+      <div class="ov-card" onclick="showSection('finanzas', null)">
+        <span class="ov-icon">💰</span>
+        <div class="ov-label accent-fin">Finanzas</div>
+        <div class="ov-value accent-fin" id="ov-balance">$0</div>
+        <div class="ov-sub">saldo total</div>
+      </div>
+      <div class="ov-card" onclick="showSection('ejercicio', null)">
+        <span class="ov-icon">🏋️</span>
+        <div class="ov-label accent-ej">Ejercicio</div>
+        <div class="ov-value" id="ov-workouts">0</div>
+        <div class="ov-sub">sesiones este mes</div>
+      </div>
+      <div class="ov-card" onclick="showSection('mente', null)">
+        <span class="ov-icon">🧘</span>
+        <div class="ov-label accent-ment">Mente</div>
+        <div class="ov-value" id="ov-mood">—</div>
+        <div class="ov-sub">estado de hoy</div>
+      </div>
+      <div class="ov-card" onclick="showSection('cuerpo', null)">
+        <span class="ov-icon">🫀</span>
+        <div class="ov-label" style="color:var(--accent-cuerpo)">Cuerpo</div>
+        <div class="ov-value" id="ov-peso">—</div>
+        <div class="ov-sub">kg · agua hoy</div>
+      </div>
+      <div class="ov-card" onclick="showSection('habitos', null)">
+        <span class="ov-icon">✅</span>
+        <div class="ov-label accent-hab">Hábitos</div>
+        <div class="ov-value" id="ov-habits">0/0</div>
+        <div class="ov-sub">completados hoy</div>
+      </div>
+    </div>
+
+    <!-- QUICK HABITS -->
+    <div class="card" style="margin-bottom:1.5rem">
+      <div class="flex-between">
+        <h2>Hábitos de hoy</h2>
+        <button class="btn btn-sm" onclick="showSection('habitos', null)">Ver todos</button>
+      </div>
+      <div class="habits-grid" id="overviewHabits"></div>
+    </div>
+
+    <!-- QUICK FINANCE -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="flex-between">
+          <h2>Últimos movimientos</h2>
+          <button class="btn btn-sm" onclick="showSection('finanzas', null)">Ver todos</button>
+        </div>
+        <div id="overviewTx"></div>
+      </div>
+      <div class="card">
+        <div class="flex-between">
+          <h2>Entrada rápida</h2>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <input type="text" id="qDesc" placeholder="Ej: Café, Sueldo...">
+        </div>
+        <div class="input-row" style="margin-bottom:1rem">
+          <div class="form-group">
+            <label>Monto</label>
+            <input type="number" id="qAmount" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label>Tipo</label>
+            <select id="qType">
+              <option value="ingreso">+ Ingreso</option>
+              <option value="gasto">− Gasto</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="quickAddTx()" style="width:100%">Registrar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINANZAS ===== -->
+  <section id="finanzas" class="section">
+    <div class="page-header">
+      <h1>Finanzas</h1>
+      <p>Controla tus ingresos, gastos y metas de ahorro.</p>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:1.5rem">
+      <div class="card">
+        <div class="card-title">Saldo Total</div>
+        <div class="metric-value accent-fin" id="fin-balance">$0</div>
+        <div class="metric-sub">actualizado ahora</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Ingresos del Mes</div>
+        <div class="metric-value" id="fin-income">$0</div>
+        <div class="metric-sub" id="fin-income-count">0 transacciones</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Gastos del Mes</div>
+        <div class="metric-value" id="fin-expenses">$0</div>
+        <div class="metric-sub" id="fin-expense-count">0 transacciones</div>
+      </div>
+    </div>
+
+    <!-- SAVINGS GOALS FULL ROW -->
+    <div class="card" style="margin-bottom:1.5rem">
+      <div class="flex-between">
+        <h2>Metas de ahorro</h2>
+        <button class="btn btn-sm btn-danger" onclick="clearGoals()">Limpiar</button>
+      </div>
+      <div id="fin-goals-dashboard" style="margin-bottom:1.25rem"></div>
+      <hr class="section-sep" style="margin-top:0">
+      <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:0.75rem">Nueva meta</div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:flex-end">
+        <div class="form-group" style="flex:2;min-width:140px;margin-bottom:0">
+          <label>Nombre</label>
+          <input type="text" id="goal-name" placeholder="Ej: Vacaciones, Auto...">
+        </div>
+        <div class="form-group" style="flex:1;min-width:100px;margin-bottom:0">
+          <label>Objetivo $</label>
+          <input type="number" id="goal-target" placeholder="10000">
+        </div>
+        <div class="form-group" style="flex:1;min-width:100px;margin-bottom:0">
+          <label>Ahorrado $</label>
+          <input type="number" id="goal-saved" placeholder="0">
+        </div>
+        <div class="form-group" style="flex:1;min-width:80px;margin-bottom:0">
+          <label>Ícono</label>
+          <input type="text" id="goal-icon" placeholder="🏖️" maxlength="2" style="font-size:1.2rem;text-align:center">
+        </div>
+        <button class="btn btn-primary" onclick="addGoal()" style="padding:10px 20px;white-space:nowrap">Agregar meta</button>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- ADD TRANSACTION -->
+      <div class="card">
+        <div class="flex-between"><h2>Nueva transacción</h2></div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <input type="text" id="fin-desc" placeholder="Ej: Renta, Supermercado, Sueldo">
+        </div>
+        <div class="input-row" style="margin-bottom:1rem">
+          <div class="form-group">
+            <label>Monto (MXN)</label>
+            <input type="number" id="fin-amount" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="fin-cat">
+              <option>🛒 Comida</option>
+              <option>🏠 Renta</option>
+              <option>🚗 Transporte</option>
+              <option>💊 Salud</option>
+              <option>🎮 Ocio</option>
+              <option>👔 Trabajo</option>
+              <option>💰 Ingreso</option>
+              <option>📦 Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:1rem">
+          <label>Tipo</label>
+          <select id="fin-type">
+            <option value="ingreso">+ Ingreso</option>
+            <option value="gasto">− Gasto</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="addTransaction()" style="width:100%">Agregar</button>
+      </div>
+
+      <!-- TRANSACTION LIST -->
+      <div class="card">
+        <div class="flex-between">
+          <h2>Historial</h2>
+          <button class="btn btn-sm btn-danger" onclick="clearTransactions()">Limpiar</button>
+        </div>
+        <div id="fin-tx-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EJERCICIO ===== -->
+  <section id="ejercicio" class="section">
+    <div class="page-header">
+      <h1>Ejercicio</h1>
+      <p>Registra tus entrenamientos y mide tu progreso físico.</p>
+    </div>
+
+    <div class="grid-4" style="margin-bottom:1.5rem">
+      <div class="card">
+        <div class="card-title">Sesiones este Mes</div>
+        <div class="metric-value" id="ej-monthly">0</div>
+        <div class="metric-sub">entrenamientos</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Racha Actual</div>
+        <div class="metric-value" id="ej-streak">0</div>
+        <div class="metric-sub">días seguidos</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Minutos Totales</div>
+        <div class="metric-value" id="ej-mins">0</div>
+        <div class="metric-sub">este mes</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Meta Semanal</div>
+        <div class="metric-value" id="ej-weekly">0/4</div>
+        <div class="metric-sub">sesiones</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="ej-weekly-bar" style="background:var(--accent-ej-dark);width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="flex-between"><h2>Registrar sesión</h2></div>
+        <div class="form-group">
+          <label>Tipo de entrenamiento</label>
+          <select id="ej-type">
+            <option>🏋️ Fuerza</option>
+            <option>🏃 Cardio</option>
+            <option>🧘 Yoga / Flexibilidad</option>
+            <option>🚴 Ciclismo</option>
+            <option>🏊 Natación</option>
+            <option>⚽ Deporte</option>
+            <option>🚶 Caminata</option>
+            <option>💪 Calistenia</option>
+            <option>🥊 Artes Marciales</option>
+          </select>
+        </div>
+        <div class="input-row" style="margin-bottom:1rem">
+          <div class="form-group">
+            <label>Duración (min)</label>
+            <input type="number" id="ej-duration" placeholder="45">
+          </div>
+          <div class="form-group">
+            <label>Intensidad</label>
+            <select id="ej-intensity">
+              <option value="baja">🟢 Baja</option>
+              <option value="media" selected>🟡 Media</option>
+              <option value="alta">🔴 Alta</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Notas</label>
+          <textarea id="ej-notes" placeholder="¿Cómo te sentiste? ¿Qué ejercicios hiciste?"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="addWorkout()" style="width:100%">Registrar sesión</button>
+      </div>
+
+      <div class="card">
+        <div class="flex-between">
+          <h2>Historial</h2>
+          <button class="btn btn-sm btn-danger" onclick="clearWorkouts()">Limpiar</button>
+        </div>
+        <div id="ej-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MENTE ===== -->
+  <section id="mente" class="section">
+    <div class="page-header">
+      <h1>Mente</h1>
+      <p>Bienestar emocional, reflexiones y mindfulness.</p>
+    </div>
+
+    <div class="inner-tabs">
+      <button class="inner-tab active" onclick="showInner('ment', 'diario', this)">Diario</button>
+      <button class="inner-tab" onclick="showInner('ment', 'estado', this)">Estado de ánimo</button>
+      <button class="inner-tab" onclick="showInner('ment', 'meditacion', this)">Meditación</button>
+    </div>
+
+    <!-- DIARIO -->
+    <div id="ment-diario" class="inner-panel active">
+      <div class="grid-2">
+        <div class="card">
+          <div class="flex-between"><h2>Nueva entrada</h2></div>
+          <div class="mood-grid" id="entry-mood-grid">
+            <button class="mood-btn" data-mood="😄" onclick="selectMood(this)">😄</button>
+            <button class="mood-btn" data-mood="😊" onclick="selectMood(this)">😊</button>
+            <button class="mood-btn" data-mood="😐" onclick="selectMood(this)">😐</button>
+            <button class="mood-btn" data-mood="😔" onclick="selectMood(this)">😔</button>
+            <button class="mood-btn" data-mood="😤" onclick="selectMood(this)">😤</button>
+            <button class="mood-btn" data-mood="😰" onclick="selectMood(this)">😰</button>
+          </div>
+          <div class="form-group">
+            <label>¿Cómo fue tu día?</label>
+            <textarea id="journal-text" rows="5" placeholder="Escribe lo que sientes, lo que lograste, lo que aprendiste..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Gratitud (3 cosas)</label>
+            <input type="text" id="journal-gratitude" placeholder="Hoy agradezco...">
+          </div>
+          <button class="btn btn-primary" onclick="addJournalEntry()" style="width:100%">Guardar entrada</button>
+        </div>
+        <div class="card">
+          <div class="flex-between">
+            <h2>Mis entradas</h2>
+            <button class="btn btn-sm btn-danger" onclick="clearJournal()">Limpiar</button>
+          </div>
+          <div id="journal-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESTADO -->
+    <div id="ment-estado" class="inner-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Estado de ánimo de hoy</div>
+          <div class="mood-grid" id="today-mood-grid">
+            <button class="mood-btn" data-mood="😄" onclick="setTodayMood(this)">😄</button>
+            <button class="mood-btn" data-mood="😊" onclick="setTodayMood(this)">😊</button>
+            <button class="mood-btn" data-mood="😐" onclick="setTodayMood(this)">😐</button>
+            <button class="mood-btn" data-mood="😔" onclick="setTodayMood(this)">😔</button>
+            <button class="mood-btn" data-mood="😤" onclick="setTodayMood(this)">😤</button>
+            <button class="mood-btn" data-mood="😰" onclick="setTodayMood(this)">😰</button>
+          </div>
+          <div id="mood-saved-msg" style="font-size:0.85rem;color:var(--accent-fin);margin-top:0.75rem;display:none">
+            ✓ Estado guardado para hoy
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Historial de Ánimo</div>
+          <div id="mood-history-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEDITACIÓN -->
+    <div id="ment-meditacion" class="inner-panel">
+      <div class="grid-2">
+        <div class="card" style="text-align:center">
+          <div class="card-title">Temporizador de Meditación</div>
+          <div style="font-family:'DM Serif Display',serif;font-size:3.5rem;letter-spacing:-0.04em;margin:1.5rem 0;color:var(--accent-ment-dark)" id="med-timer">05:00</div>
+          <div style="display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.5rem">
+            <button class="btn btn-sm" onclick="setMedTime(5)">5 min</button>
+            <button class="btn btn-sm" onclick="setMedTime(10)">10 min</button>
+            <button class="btn btn-sm" onclick="setMedTime(15)">15 min</button>
+            <button class="btn btn-sm" onclick="setMedTime(20)">20 min</button>
+          </div>
+          <div style="display:flex;gap:0.75rem;justify-content:center">
+            <button class="btn btn-primary" id="med-start-btn" onclick="toggleMeditation()">▶ Iniciar</button>
+            <button class="btn" onclick="resetMeditation()">↺ Reiniciar</button>
+          </div>
+          <p style="font-size:0.8rem;color:var(--text3);margin-top:1rem" id="med-sessions-label">0 sesiones completadas</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Total este mes</div>
+          <div class="metric-value accent-ment" id="med-total-mins">0</div>
+          <div class="metric-sub">minutos meditados</div>
+          <hr class="section-sep">
+          <div class="card-title">Historial de sesiones</div>
+          <div id="med-history"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RELACIONES ===== -->
+  <section id="relaciones" class="section">
+    <div class="page-header">
+      <h1>Relaciones</h1>
+      <p>Mantén vivos los vínculos que te importan.</p>
+    </div>
+
+    <div class="inner-tabs">
+      <button class="inner-tab active" onclick="showInner('rel', 'contactos', this)">Contactos</button>
+      <button class="inner-tab" onclick="showInner('rel', 'notas', this)">Notas de conexión</button>
+    </div>
+
+    <!-- CONTACTOS -->
+    <div id="rel-contactos" class="inner-panel active">
+      <div class="grid-2">
+        <div class="card">
+          <div class="flex-between"><h2>Agregar persona</h2></div>
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" id="rel-name" placeholder="Ej: María López">
+          </div>
+          <div class="input-row" style="margin-bottom:1rem">
+            <div class="form-group">
+              <label>Relación</label>
+              <select id="rel-type">
+                <option value="familia">👨‍👩‍👧 Familia</option>
+                <option value="amigo">👥 Amigo/a</option>
+                <option value="pareja">❤️ Pareja</option>
+                <option value="colega">💼 Colega</option>
+                <option value="mentor">🌟 Mentor/a</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Nota / Último contacto</label>
+            <textarea id="rel-note" placeholder="¿De qué hablaron? ¿Qué recuerdas?"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Recordatorio de contacto</label>
+            <select id="rel-reminder">
+              <option value="">Sin recordatorio</option>
+              <option value="semanal">Cada semana</option>
+              <option value="quincenal">Cada 2 semanas</option>
+              <option value="mensual">Cada mes</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="addContact()" style="width:100%">Agregar</button>
+        </div>
+        <div class="card">
+          <div class="flex-between">
+            <h2>Mi círculo</h2>
+            <button class="btn btn-sm btn-danger" onclick="clearContacts()">Limpiar</button>
+          </div>
+          <div id="rel-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTAS DE CONEXIÓN -->
+    <div id="rel-notas" class="inner-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="flex-between"><h2>Nueva nota</h2></div>
+          <div class="form-group">
+            <label>Persona</label>
+            <input type="text" id="cn-person" placeholder="¿Con quién fue?">
+          </div>
+          <div class="form-group">
+            <label>¿Qué pasó?</label>
+            <textarea id="cn-note" rows="4" placeholder="Un café, una llamada, un mensaje especial..."></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="addConnectionNote()" style="width:100%">Guardar nota</button>
+        </div>
+        <div class="card">
+          <div class="flex-between">
+            <h2>Notas recientes</h2>
+            <button class="btn btn-sm btn-danger" onclick="clearConnectionNotes()">Limpiar</button>
+          </div>
+          <div id="cn-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CUERPO ===== -->
+  <section id="cuerpo" class="section">
+    <div class="page-header">
+      <h1>Cuerpo</h1>
+      <p>Seguimiento de peso, medidas, agua, sueño y bienestar físico.</p>
+    </div>
+
+    <div class="inner-tabs">
+      <button class="inner-tab active" onclick="showInner('cpo', 'peso', this)">Peso & Medidas</button>
+      <button class="inner-tab" onclick="showInner('cpo', 'agua', this)">Agua & Sueño</button>
+      <button class="inner-tab" onclick="showInner('cpo', 'nutricion', this)">Nutrición</button>
+    </div>
+
+    <!-- PESO & MEDIDAS -->
+    <div id="cpo-peso" class="inner-panel active">
+      <div class="grid-4" style="margin-bottom:1.5rem">
+        <div class="card">
+          <div class="card-title">Peso Actual</div>
+          <div class="metric-value" id="cpo-peso-val" style="color:var(--accent-cuerpo)">—</div>
+          <div class="metric-sub">kg</div>
+        </div>
+        <div class="card">
+          <div class="card-title">IMC</div>
+          <div class="metric-value" id="cpo-imc">—</div>
+          <div class="metric-sub" id="cpo-imc-label">—</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Meta de Peso</div>
+          <div class="metric-value" id="cpo-meta-peso">—</div>
+          <div class="metric-sub" id="cpo-meta-diff">sin meta</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Registros</div>
+          <div class="metric-value" id="cpo-registros">0</div>
+          <div class="metric-sub">entradas totales</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="flex-between"><h2>Registrar medidas</h2></div>
+          <div class="input-row" style="margin-bottom:1rem">
+            <div class="form-group">
+              <label>Peso (kg)</label>
+              <input type="number" id="cpo-peso-input" placeholder="70.5" step="0.1">
+            </div>
+            <div class="form-group">
+              <label>Altura (cm)</label>
+              <input type="number" id="cpo-altura" placeholder="175">
+            </div>
+          </div>
+          <div class="input-row" style="margin-bottom:1rem">
+            <div class="form-group">
+              <label>Cintura (cm)</label>
+              <input type="number" id="cpo-cintura" placeholder="80" step="0.5">
+            </div>
+            <div class="form-group">
+              <label>Cadera (cm)</label>
+              <input type="number" id="cpo-cadera" placeholder="95" step="0.5">
+            </div>
+          </div>
+          <div class="input-row" style="margin-bottom:1rem">
+            <div class="form-group">
+              <label>Pecho (cm)</label>
+              <input type="number" id="cpo-pecho" placeholder="100" step="0.5">
+            </div>
+            <div class="form-group">
+              <label>Brazo (cm)</label>
+              <input type="number" id="cpo-brazo" placeholder="35" step="0.5">
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem">
+            <label>Meta de peso (kg)</label>
+            <input type="number" id="cpo-meta-input" placeholder="65" step="0.5">
+          </div>
+          <button class="btn btn-primary" onclick="addBodyEntry()" style="width:100%">Guardar medidas</button>
+        </div>
+
+        <div class="card">
+          <div class="flex-between">
+            <h2>Historial de peso</h2>
+            <button class="btn btn-sm btn-danger" onclick="clearBodyEntries()">Limpiar</button>
+          </div>
+          <!-- Mini chart -->
+          <div id="cpo-chart-wrap" style="margin-bottom:1rem;display:none">
+            <div style="font-size:0.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Últimas 10 semanas</div>
+            <div class="mini-bar-chart" id="cpo-peso-chart"></div>
+          </div>
+          <div id="cpo-peso-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGUA & SUEÑO -->
+    <div id="cpo-agua" class="inner-panel">
+      <div class="grid-4" style="margin-bottom:1.5rem">
+        <div class="card">
+          <div class="card-title">Agua Hoy</div>
+          <div class="metric-value" id="cpo-agua-hoy" style="color:var(--accent-hab)">0</div>
+          <div class="metric-sub">vasos (meta: 8)</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="cpo-agua-bar" style="background:var(--accent-hab);width:0%"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Sueño Anoche</div>
+          <div class="metric-value" id="cpo-sueno-hoy">—</div>
+          <div class="metric-sub">horas</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Calidad de Sueño</div>
+          <div class="metric-value" id="cpo-sueno-calidad">—</div>
+          <div class="metric-sub" id="cpo-sueno-calidad-label">sin registro</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Promedio Sueño</div>
+          <div class="metric-value" id="cpo-sueno-avg">—</div>
+          <div class="metric-sub">últimos 7 días</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="flex-between"><h2>Agua — hoy</h2></div>
+          <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.25rem" id="cpo-vasos-grid"></div>
+          <div style="display:flex;gap:0.75rem;align-items:center">
+            <button class="btn btn-primary" onclick="addVaso()" style="flex:1">+ 1 vaso</button>
+            <button class="btn" onclick="removeVaso()">− 1 vaso</button>
+          </div>
+
+          <hr class="section-sep">
+
+          <div class="flex-between"><h2>Sueño — anoche</h2></div>
+          <div class="input-row" style="margin-bottom:1rem">
+            <div class="form-group">
+              <label>Horas dormidas</label>
+              <input type="number" id="cpo-sueno-input" placeholder="7.5" step="0.5" min="0" max="24">
+            </div>
+            <div class="form-group">
+              <label>Calidad (1-5)</label>
+              <select id="cpo-sueno-quality">
+                <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+                <option value="4">⭐⭐⭐⭐ Buena</option>
+                <option value="3" selected>⭐⭐⭐ Regular</option>
+                <option value="2">⭐⭐ Mala</option>
+                <option value="1">⭐ Muy mala</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem">
+            <label>Nota</label>
+            <input type="text" id="cpo-sueno-nota" placeholder="Ej: Desperté varias veces...">
+          </div>
+          <button class="btn btn-primary" onclick="addSleepEntry()" style="width:100%">Registrar sueño</button>
+        </div>
+
+        <div class="card">
+          <div class="flex-between">
+            <h2>Historial de sueño</h2>
+            <button class="btn btn-sm btn-danger" onclick="clearSleep()">Limpiar</button>
+          </div>
+          <div id="cpo-sueno-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NUTRICIÓN -->
+    <div id="cpo-nutricion" class="inner-panel">
+      <div class="grid-3" style="margin-bottom:1.5rem">
+        <div class="card">
+          <div class="card-title">Calorías Hoy</div>
+          <div class="metric-value" id="cpo-cal-hoy" style="color:var(--accent-cuerpo)">0</div>
+          <div class="metric-sub" id="cpo-cal-meta-label">meta: 2000 kcal</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Proteína Hoy</div>
+          <div class="metric-value" id="cpo-prot-hoy">0g</div>
+          <div class="metric-sub">meta: 120g</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Comidas Registradas</div>
+          <div class="metric-value" id="cpo-comidas-hoy">0</div>
+          <div class="metric-sub">hoy</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="flex-between"><h2>Registrar comida</h2></div>
+          <div class="form-group">
+            <label>Descripción</label>
+            <input type="text" id="nut-desc" placeholder="Ej: Pollo con arroz, Proteína shake...">
+          </div>
+          <div class="input-row" style="margin-bottom:1rem">
+            <div class="form-group">
+              <label>Calorías (kcal)</label>
+              <input type="number" id="nut-cal" placeholder="500">
+            </div>
+            <div class="form-group">
+              <label>Proteína (g)</label>
+              <input type="number" id="nut-prot" placeholder="30">
+            </div>
+          </div>
+          <div class="input-row" style="margin-bottom:1rem">
+            <div class="form-group">
+              <label>Carbohidratos (g)</label>
+              <input type="number" id="nut-carbs" placeholder="60">
+            </div>
+            <div class="form-group">
+              <label>Grasas (g)</label>
+              <input type="number" id="nut-fat" placeholder="15">
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem">
+            <label>Tiempo</label>
+            <select id="nut-time">
+              <option>🌅 Desayuno</option>
+              <option>☀️ Almuerzo</option>
+              <option>🌙 Cena</option>
+              <option>🍎 Snack</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="addMeal()" style="width:100%">Registrar</button>
+
+          <hr class="section-sep">
+          <div style="font-size:0.75rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:0.75rem">Mis metas calóricas</div>
+          <div class="input-row">
+            <div class="form-group" style="margin-bottom:0">
+              <label>Meta kcal/día</label>
+              <input type="number" id="nut-goal-cal" placeholder="2000">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label>Meta proteína (g)</label>
+              <input type="number" id="nut-goal-prot" placeholder="120">
+            </div>
+            <div style="padding-top:20px">
+              <button class="btn btn-primary btn-sm" onclick="saveNutGoals()">Guardar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="div" style="margin-bottom:1rem">
+            <div style="font-size:0.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Calorías hoy</div>
+            <div class="progress-bar" style="height:12px">
+              <div class="progress-fill" id="cpo-cal-bar" style="background:var(--accent-cuerpo);width:0%"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text2);margin-top:4px">
+              <span id="cpo-cal-prog-label">0 kcal</span>
+              <span id="cpo-cal-goal-label">meta: 2000 kcal</span>
+            </div>
+          </div>
+          <div class="flex-between" style="margin-top:1rem">
+            <h2>Comidas de hoy</h2>
+            <button class="btn btn-sm btn-danger" onclick="clearMeals()">Limpiar hoy</button>
+          </div>
+          <div id="cpo-meals-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HÁBITOS ===== -->
+  <section id="habitos" class="section">
+    <div class="page-header">
+      <h1>Hábitos</h1>
+      <p>Construye una vida mejor un día a la vez.</p>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:1.5rem">
+      <div class="card">
+        <div class="card-title">Completados Hoy</div>
+        <div class="metric-value accent-hab" id="hab-today-count">0</div>
+        <div class="metric-sub" id="hab-today-total">de 0 hábitos</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Mejor Racha</div>
+        <div class="metric-value" id="hab-best-streak">0</div>
+        <div class="metric-sub">días consecutivos</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Tasa de Éxito</div>
+        <div class="metric-value" id="hab-success-rate">—</div>
+        <div class="metric-sub">últimos 7 días</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- ADD HABIT -->
+      <div class="card">
+        <div class="flex-between"><h2>Crear hábito</h2></div>
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="hab-name" placeholder="Ej: Leer 30 min">
+        </div>
+        <div class="input-row" style="margin-bottom:1rem">
+          <div class="form-group">
+            <label>Ícono</label>
+            <input type="text" id="hab-icon" placeholder="📚" maxlength="2" style="font-size:1.4rem;text-align:center">
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="hab-cat">
+              <option value="ment">🧘 Mente</option>
+              <option value="ej">💪 Ejercicio</option>
+              <option value="fin">💰 Finanzas</option>
+              <option value="rel">❤️ Relaciones</option>
+              <option value="gen">⭐ General</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="addHabit()" style="width:100%">Crear hábito</button>
+
+        <hr class="section-sep">
+        <div class="flex-between" style="margin-bottom:0.5rem">
+          <span style="font-size:0.8rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em">Sugeridos</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem">
+          <button class="btn btn-sm" onclick="addSuggestedHabit('Meditación','🧘','ment')">🧘 Meditación</button>
+          <button class="btn btn-sm" onclick="addSuggestedHabit('Leer 30 min','📚','ment')">📚 Leer</button>
+          <button class="btn btn-sm" onclick="addSuggestedHabit('Ejercicio','🏋️','ej')">🏋️ Ejercicio</button>
+          <button class="btn btn-sm" onclick="addSuggestedHabit('Agua 2L','💧','gen')">💧 Agua</button>
+          <button class="btn btn-sm" onclick="addSuggestedHabit('Sin redes 1h','📵','ment')">📵 Sin redes</button>
+          <button class="btn btn-sm" onclick="addSuggestedHabit('Ahorrar $50','💰','fin')">💰 Ahorrar</button>
+          <button class="btn btn-sm" onclick="addSuggestedHabit('Llamar a alguien','📞','rel')">📞 Llamar</button>
+          <button class="btn btn-sm" onclick="addSuggestedHabit('Dormir 8h','😴','gen')">😴 Dormir</button>
+        </div>
+      </div>
+
+      <!-- HABITS LIST TODAY -->
+      <div class="card">
+        <div class="flex-between">
+          <h2>Mis hábitos de hoy</h2>
+          <button class="btn btn-sm btn-danger" onclick="clearHabits()">Limpiar</button>
+        </div>
+        <div class="habits-grid" id="hab-grid"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ===== STATE =====
+let state = {
+  transactions: [],
+  goals: [],
+  workouts: [],
+  journal: [],
+  moodHistory: [],
+  todayMood: null,
+  contacts: [],
+  connectionNotes: [],
+  habits: [],
+  habitLog: {},
+  meditationSessions: [],
+  meditationMinutes: 0,
+};
+
+const TODAY = new Date().toISOString().split('T')[0];
+let selectedJournalMood = null;
+let medInterval = null;
+let medRunning = false;
+let medSeconds = 300;
+let medTotalSeconds = 300;
+
+// ===== PERSISTENCE =====
+function save() {
+  localStorage.setItem('vida_state', JSON.stringify(state));
+}
+
+function load() {
+  const raw = localStorage.getItem('vida_state');
+  if (raw) {
+    try { state = {...state, ...JSON.parse(raw)}; } catch(e) {}
+  }
+}
+
+// ===== NAVIGATION =====
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  } else {
+    document.querySelectorAll('.nav-tab').forEach(t => {
+      t.classList.toggle('active', t.textContent.toLowerCase().includes(id.substring(0,4)) || (id==='overview' && t.textContent==='Hoy'));
+    });
+  }
+  renderAll();
+}
+
+function showInner(prefix, id, btn) {
+  document.querySelectorAll(`[id^="${prefix}-"]`).forEach(p => p.classList.remove('active'));
+  document.getElementById(`${prefix}-${id}`).classList.add('active');
+  btn.closest('.inner-tabs').querySelectorAll('.inner-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ===== DATE =====
+function setDate() {
+  const d = new Date();
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('navDate').textContent = d.toLocaleDateString('es-MX', opts);
+  const h = d.getHours();
+  let greet = h < 12 ? 'Buenos días' : h < 18 ? 'Buenas tardes' : 'Buenas noches';
+  document.getElementById('overviewGreeting').textContent = `${greet}. Un día más para construir la vida que quieres.`;
+}
+
+// ===== FINANZAS =====
+function addTransaction(desc, amount, type, cat) {
+  desc = desc || document.getElementById('fin-desc').value.trim();
+  amount = amount || parseFloat(document.getElementById('fin-amount').value);
+  type = type || document.getElementById('fin-type').value;
+  cat = cat || document.getElementById('fin-cat').value;
+  if (!desc || !amount || isNaN(amount)) return;
+  state.transactions.unshift({ id: Date.now(), desc, amount, type, cat, date: TODAY });
+  save();
+  document.getElementById('fin-desc').value = '';
+  document.getElementById('fin-amount').value = '';
+  renderFinance();
+  renderOverview();
+}
+
+function quickAddTx() {
+  const desc = document.getElementById('qDesc').value.trim();
+  const amount = parseFloat(document.getElementById('qAmount').value);
+  const type = document.getElementById('qType').value;
+  if (!desc || !amount) return;
+  state.transactions.unshift({ id: Date.now(), desc, amount, type, cat: type === 'ingreso' ? '💰 Ingreso' : '📦 Otro', date: TODAY });
+  save();
+  document.getElementById('qDesc').value = '';
+  document.getElementById('qAmount').value = '';
+  renderFinance();
+  renderOverview();
+}
+
+function clearTransactions() {
+  if (confirm('¿Borrar todas las transacciones?')) { state.transactions = []; save(); renderFinance(); renderOverview(); }
+}
+
+function addGoal() {
+  const name = document.getElementById('goal-name').value.trim();
+  const target = parseFloat(document.getElementById('goal-target').value);
+  const saved = parseFloat(document.getElementById('goal-saved').value) || 0;
+  const icon = document.getElementById('goal-icon').value.trim() || '🎯';
+  if (!name || !target) return;
+  state.goals.push({ id: Date.now(), name, target, saved, icon });
+  save();
+  document.getElementById('goal-name').value = '';
+  document.getElementById('goal-target').value = '';
+  document.getElementById('goal-saved').value = '';
+  document.getElementById('goal-icon').value = '';
+  renderFinance();
+}
+
+function clearGoals() {
+  if (confirm('¿Borrar todas las metas de ahorro?')) { state.goals = []; save(); renderFinance(); }
+}
+
+function updateGoalSaved(id, delta) {
+  const g = state.goals.find(g => g.id === id);
+  if (!g) return;
+  g.saved = Math.max(0, g.saved + delta);
+  save();
+  renderFinance();
+}
+
+function renderFinance() {
+  const month = TODAY.substring(0, 7);
+  const monthTx = state.transactions.filter(t => t.date.startsWith(month));
+  const income = monthTx.filter(t => t.type === 'ingreso').reduce((a, t) => a + t.amount, 0);
+  const expenses = monthTx.filter(t => t.type === 'gasto').reduce((a, t) => a + t.amount, 0);
+  const balance = state.transactions.reduce((a, t) => t.type === 'ingreso' ? a + t.amount : a - t.amount, 0);
+
+  setText('fin-balance', fmt(balance));
+  setText('fin-income', fmt(income));
+  setText('fin-expenses', fmt(expenses));
+  setText('fin-income-count', `${monthTx.filter(t=>t.type==='ingreso').length} transacciones`);
+  setText('fin-expense-count', `${monthTx.filter(t=>t.type==='gasto').length} transacciones`);
+  document.getElementById('fin-balance').style.color = balance >= 0 ? 'var(--accent-fin)' : 'var(--accent-rel)';
+
+  // TX LIST
+  const list = document.getElementById('fin-tx-list');
+  if (!state.transactions.length) { list.innerHTML = '<div class="empty">Sin transacciones aún</div>'; }
+  else {
+    list.innerHTML = state.transactions.slice(0, 20).map(t => `
+      <div class="list-item">
+        <div class="list-item-left">
+          <div class="list-item-icon" style="background:${t.type==='ingreso'?'var(--accent-fin-bg)':'var(--accent-rel-bg)'}">
+            ${t.cat.split(' ')[0]}
+          </div>
+          <div>
+            <div class="list-item-name">${t.desc}</div>
+            <div class="list-item-sub">${t.date} · ${t.cat}</div>
+          </div>
+        </div>
+        <div class="list-item-amount" style="color:${t.type==='ingreso'?'var(--accent-fin)':'var(--accent-rel)'}">
+          ${t.type==='ingreso'?'+':'-'}${fmt(t.amount)}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // GOALS DASHBOARD
+  const gl = document.getElementById('fin-goals-dashboard');
+  if (!state.goals.length) {
+    gl.innerHTML = '<div class="empty" style="padding:0.5rem 0 0.25rem">Agrega tu primera meta de ahorro abajo</div>';
+  } else {
+    gl.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem">` +
+      state.goals.map(g => {
+        const pct = Math.min(100, Math.round((g.saved / g.target) * 100));
+        const remaining = Math.max(0, g.target - g.saved);
+        return `
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-size:1.4rem">${g.icon || '🎯'}</span>
+                <span style="font-weight:600;font-size:0.9rem">${g.name}</span>
+              </div>
+              <span style="font-size:0.75rem;font-weight:700;color:var(--accent-fin)">${pct}%</span>
+            </div>
+            <div class="progress-bar" style="margin-bottom:0.6rem">
+              <div class="progress-fill" style="background:var(--accent-fin);width:${pct}%"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--text2);margin-bottom:0.75rem">
+              <span>${fmt(g.saved)} ahorrado</span>
+              <span>${fmt(remaining)} restante</span>
+            </div>
+            <div style="display:flex;gap:6px">
+              <input type="number" id="goal-add-${g.id}" placeholder="100" style="flex:1;padding:6px 10px;border:1px solid var(--border2);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:0.82rem;background:var(--surface);color:var(--text);outline:none">
+              <button class="btn btn-sm btn-primary" onclick="depositGoal(${g.id})">+ Abonar</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteGoal(${g.id})" style="padding:4px 8px">✕</button>
+            </div>
+          </div>
+        `;
+      }).join('') + '</div>';
+  }
+}
+
+// ===== EJERCICIO =====
+function addWorkout() {
+  const type = document.getElementById('ej-type').value;
+  const duration = parseInt(document.getElementById('ej-duration').value) || 0;
+  const intensity = document.getElementById('ej-intensity').value;
+  const notes = document.getElementById('ej-notes').value.trim();
+  if (!duration) return;
+  state.workouts.unshift({ id: Date.now(), type, duration, intensity, notes, date: TODAY });
+  save();
+  document.getElementById('ej-duration').value = '';
+  document.getElementById('ej-notes').value = '';
+  renderExercise();
+  renderOverview();
+}
+
+function clearWorkouts() {
+  if (confirm('¿Borrar historial de ejercicio?')) { state.workouts = []; save(); renderExercise(); renderOverview(); }
+}
+
+function renderExercise() {
+  const month = TODAY.substring(0, 7);
+  const monthW = state.workouts.filter(w => w.date.startsWith(month));
+  const weekStart = getWeekStart();
+  const weekW = state.workouts.filter(w => w.date >= weekStart && w.date <= TODAY);
+  const mins = monthW.reduce((a, w) => a + w.duration, 0);
+  const weekGoal = 4;
+  const weekPct = Math.min(100, Math.round((weekW.length / weekGoal) * 100));
+
+  setText('ej-monthly', monthW.length);
+  setText('ej-streak', calcWorkoutStreak());
+  setText('ej-mins', mins);
+  setText('ej-weekly', `${weekW.length}/${weekGoal}`);
+  document.getElementById('ej-weekly-bar').style.width = weekPct + '%';
+
+  const list = document.getElementById('ej-list');
+  if (!state.workouts.length) { list.innerHTML = '<div class="empty">Sin sesiones registradas</div>'; return; }
+  list.innerHTML = state.workouts.slice(0, 15).map(w => `
+    <div class="workout-entry">
+      <div class="workout-icon">${w.type.split(' ')[0]}</div>
+      <div style="flex:1">
+        <div class="list-item-name">${w.type}</div>
+        <div class="list-item-sub">${w.date} · ${w.duration} min · ${w.intensity}</div>
+        ${w.notes ? `<div style="font-size:0.78rem;color:var(--text2);margin-top:3px">${w.notes}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function calcWorkoutStreak() {
+  if (!state.workouts.length) return 0;
+  const dates = [...new Set(state.workouts.map(w => w.date))].sort().reverse();
+  let streak = 0, current = new Date(TODAY);
+  for (let d of dates) {
+    const dd = new Date(d);
+    const diff = Math.round((current - dd) / 86400000);
+    if (diff <= 1) { streak++; current = dd; } else break;
+  }
+  return streak;
+}
+
+function getWeekStart() {
+  const d = new Date();
+  d.setDate(d.getDate() - d.getDay());
+  return d.toISOString().split('T')[0];
+}
+
+// ===== MENTE: JOURNAL =====
+function selectMood(btn) {
+  document.querySelectorAll('#entry-mood-grid .mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedJournalMood = btn.dataset.mood;
+}
+
+function addJournalEntry() {
+  const text = document.getElementById('journal-text').value.trim();
+  if (!text) return;
+  const gratitude = document.getElementById('journal-gratitude').value.trim();
+  state.journal.unshift({ id: Date.now(), text, gratitude, mood: selectedJournalMood || '😊', date: TODAY });
+  save();
+  document.getElementById('journal-text').value = '';
+  document.getElementById('journal-gratitude').value = '';
+  selectedJournalMood = null;
+  document.querySelectorAll('#entry-mood-grid .mood-btn').forEach(b => b.classList.remove('selected'));
+  renderJournal();
+}
+
+function clearJournal() {
+  if (confirm('¿Borrar todas las entradas?')) { state.journal = []; save(); renderJournal(); }
+}
+
+function renderJournal() {
+  const list = document.getElementById('journal-list');
+  if (!state.journal.length) { list.innerHTML = '<div class="empty">Sin entradas aún. ¡Escribe algo!</div>'; return; }
+  list.innerHTML = state.journal.slice(0, 10).map(e => `
+    <div class="journal-entry">
+      <div class="journal-entry-meta">
+        <span class="journal-entry-date">${e.date}</span>
+        <span class="journal-entry-mood">${e.mood}</span>
+      </div>
+      <div class="journal-entry-text">${e.text}</div>
+      ${e.gratitude ? `<div style="font-size:0.78rem;color:var(--accent-fin);margin-top:6px">🙏 ${e.gratitude}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ===== MENTE: MOOD =====
+function setTodayMood(btn) {
+  document.querySelectorAll('#today-mood-grid .mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.todayMood = btn.dataset.mood;
+  const existing = state.moodHistory.find(m => m.date === TODAY);
+  if (existing) existing.mood = state.todayMood;
+  else state.moodHistory.unshift({ date: TODAY, mood: state.todayMood });
+  save();
+  document.getElementById('mood-saved-msg').style.display = 'block';
+  renderMoodHistory();
+  renderOverview();
+}
+
+function renderMoodHistory() {
+  const el = document.getElementById('mood-history-list');
+  if (!state.moodHistory.length) { el.innerHTML = '<div class="empty">Sin registros</div>'; return; }
+  el.innerHTML = state.moodHistory.slice(0, 14).map(m => `
+    <div class="list-item">
+      <span style="font-size:0.88rem">${m.date}</span>
+      <span style="font-size:1.4rem">${m.mood}</span>
+    </div>
+  `).join('');
+  // Restore today's selection
+  if (state.todayMood) {
+    document.querySelectorAll('#today-mood-grid .mood-btn').forEach(b => {
+      b.classList.toggle('selected', b.dataset.mood === state.todayMood);
+    });
+  }
+}
+
+// ===== MEDITACIÓN =====
+function setMedTime(mins) {
+  if (medRunning) return;
+  medTotalSeconds = mins * 60;
+  medSeconds = medTotalSeconds;
+  updateMedDisplay();
+}
+
+function toggleMeditation() {
+  if (!medRunning) {
+    medRunning = true;
+    document.getElementById('med-start-btn').textContent = '⏸ Pausar';
+    medInterval = setInterval(() => {
+      medSeconds--;
+      updateMedDisplay();
+      if (medSeconds <= 0) {
+        clearInterval(medInterval);
+        medRunning = false;
+        document.getElementById('med-start-btn').textContent = '▶ Iniciar';
+        const mins = Math.round(medTotalSeconds / 60);
+        state.meditationSessions.unshift({ date: TODAY, mins });
+        state.meditationMinutes = (state.meditationMinutes || 0) + mins;
+        save();
+        medSeconds = medTotalSeconds;
+        updateMedDisplay();
+        renderMeditation();
+        alert(`🧘 ¡Sesión de ${mins} minutos completada!`);
+      }
+    }, 1000);
+  } else {
+    medRunning = false;
+    clearInterval(medInterval);
+    document.getElementById('med-start-btn').textContent = '▶ Iniciar';
+  }
+}
+
+function resetMeditation() {
+  if (medRunning) { clearInterval(medInterval); medRunning = false; }
+  medSeconds = medTotalSeconds;
+  document.getElementById('med-start-btn').textContent = '▶ Iniciar';
+  updateMedDisplay();
+}
+
+function updateMedDisplay() {
+  const m = Math.floor(medSeconds / 60).toString().padStart(2, '0');
+  const s = (medSeconds % 60).toString().padStart(2, '0');
+  document.getElementById('med-timer').textContent = `${m}:${s}`;
+}
+
+function renderMeditation() {
+  const month = TODAY.substring(0, 7);
+  const monthSess = (state.meditationSessions || []).filter(s => s.date.startsWith(month));
+  const totalMins = monthSess.reduce((a, s) => a + s.mins, 0);
+  setText('med-total-mins', totalMins);
+  setText('med-sessions-label', `${monthSess.length} sesiones completadas`);
+  const hist = document.getElementById('med-history');
+  if (!monthSess.length) { hist.innerHTML = '<div class="empty">Sin sesiones este mes</div>'; return; }
+  hist.innerHTML = monthSess.slice(0, 8).map(s => `
+    <div class="list-item">
+      <span style="font-size:0.85rem">${s.date}</span>
+      <span class="metric-badge badge-yellow">${s.mins} min</span>
+    </div>
+  `).join('');
+}
+
+function depositGoal(id) {
+  const input = document.getElementById(`goal-add-${id}`);
+  const amount = parseFloat(input?.value) || 0;
+  if (!amount) return;
+  const g = state.goals.find(g => g.id === id);
+  if (!g) return;
+  g.saved = Math.min(g.target, g.saved + amount);
+  save();
+  renderFinance();
+}
+
+function deleteGoal(id) {
+  state.goals = state.goals.filter(g => g.id !== id);
+  save();
+  renderFinance();
+}
+
+// ===== CUERPO =====
+function addBodyEntry() {
+  const peso = parseFloat(document.getElementById('cpo-peso-input').value);
+  const altura = parseFloat(document.getElementById('cpo-altura').value);
+  const cintura = parseFloat(document.getElementById('cpo-cintura').value) || null;
+  const cadera = parseFloat(document.getElementById('cpo-cadera').value) || null;
+  const pecho = parseFloat(document.getElementById('cpo-pecho').value) || null;
+  const brazo = parseFloat(document.getElementById('cpo-brazo').value) || null;
+  const meta = parseFloat(document.getElementById('cpo-meta-input').value) || null;
+  if (!peso) return;
+  if (!state.bodyEntries) state.bodyEntries = [];
+  state.bodyEntries.unshift({ id: Date.now(), peso, altura, cintura, cadera, pecho, brazo, meta, date: TODAY });
+  if (meta) state.weightGoal = meta;
+  save();
+  document.getElementById('cpo-peso-input').value = '';
+  renderCuerpo();
+}
+
+function clearBodyEntries() {
+  if (confirm('¿Borrar historial de peso?')) { state.bodyEntries = []; save(); renderCuerpo(); }
+}
+
+function addVaso() {
+  if (!state.waterLog) state.waterLog = {};
+  state.waterLog[TODAY] = (state.waterLog[TODAY] || 0) + 1;
+  save(); renderCuerpo();
+}
+
+function removeVaso() {
+  if (!state.waterLog) state.waterLog = {};
+  state.waterLog[TODAY] = Math.max(0, (state.waterLog[TODAY] || 0) - 1);
+  save(); renderCuerpo();
+}
+
+function addSleepEntry() {
+  const hrs = parseFloat(document.getElementById('cpo-sueno-input').value);
+  const quality = parseInt(document.getElementById('cpo-sueno-quality').value);
+  const nota = document.getElementById('cpo-sueno-nota').value.trim();
+  if (!hrs) return;
+  if (!state.sleepLog) state.sleepLog = [];
+  const existing = state.sleepLog.findIndex(s => s.date === TODAY);
+  if (existing >= 0) state.sleepLog[existing] = { hrs, quality, nota, date: TODAY };
+  else state.sleepLog.unshift({ hrs, quality, nota, date: TODAY });
+  save();
+  document.getElementById('cpo-sueno-input').value = '';
+  document.getElementById('cpo-sueno-nota').value = '';
+  renderCuerpo();
+}
+
+function clearSleep() {
+  if (confirm('¿Borrar historial de sueño?')) { state.sleepLog = []; save(); renderCuerpo(); }
+}
+
+function addMeal() {
+  const desc = document.getElementById('nut-desc').value.trim();
+  const cal = parseInt(document.getElementById('nut-cal').value) || 0;
+  const prot = parseInt(document.getElementById('nut-prot').value) || 0;
+  const carbs = parseInt(document.getElementById('nut-carbs').value) || 0;
+  const fat = parseInt(document.getElementById('nut-fat').value) || 0;
+  const time = document.getElementById('nut-time').value;
+  if (!desc) return;
+  if (!state.meals) state.meals = [];
+  state.meals.unshift({ id: Date.now(), desc, cal, prot, carbs, fat, time, date: TODAY });
+  save();
+  document.getElementById('nut-desc').value = '';
+  document.getElementById('nut-cal').value = '';
+  document.getElementById('nut-prot').value = '';
+  document.getElementById('nut-carbs').value = '';
+  document.getElementById('nut-fat').value = '';
+  renderCuerpo();
+}
+
+function clearMeals() {
+  if (confirm('¿Borrar comidas de hoy?')) {
+    state.meals = (state.meals || []).filter(m => m.date !== TODAY);
+    save(); renderCuerpo();
+  }
+}
+
+function saveNutGoals() {
+  const cal = parseInt(document.getElementById('nut-goal-cal').value);
+  const prot = parseInt(document.getElementById('nut-goal-prot').value);
+  if (cal) state.nutGoalCal = cal;
+  if (prot) state.nutGoalProt = prot;
+  save(); renderCuerpo();
+}
+
+const qualityStars = {5:'⭐⭐⭐⭐⭐',4:'⭐⭐⭐⭐',3:'⭐⭐⭐',2:'⭐⭐',1:'⭐'};
+const qualityLabels = {5:'Excelente',4:'Buena',3:'Regular',2:'Mala',1:'Muy mala'};
+
+function renderCuerpo() {
+  if (!state.bodyEntries) state.bodyEntries = [];
+  if (!state.waterLog) state.waterLog = {};
+  if (!state.sleepLog) state.sleepLog = [];
+  if (!state.meals) state.meals = [];
+
+  // PESO & MEDIDAS
+  const latest = state.bodyEntries[0];
+  const peso = latest?.peso;
+  const altura = latest?.altura;
+  setText('cpo-peso-val', peso ? peso.toFixed(1) : '—');
+  setText('cpo-registros', state.bodyEntries.length);
+
+  if (peso && altura) {
+    const hm = altura / 100;
+    const imc = peso / (hm * hm);
+    setText('cpo-imc', imc.toFixed(1));
+    const label = imc < 18.5 ? 'Bajo peso' : imc < 25 ? 'Normal' : imc < 30 ? 'Sobrepeso' : 'Obesidad';
+    setText('cpo-imc-label', label);
+  }
+
+  const wg = state.weightGoal || latest?.meta;
+  if (wg) {
+    setText('cpo-meta-peso', wg);
+    if (peso) {
+      const diff = (peso - wg).toFixed(1);
+      setText('cpo-meta-diff', diff > 0 ? `faltan ${diff} kg` : diff < 0 ? `pasaste ${Math.abs(diff)} kg` : '¡Meta alcanzada!');
+    }
+  }
+
+  // Peso chart
+  const chartWrap = document.getElementById('cpo-chart-wrap');
+  const chartEl = document.getElementById('cpo-peso-chart');
+  if (state.bodyEntries.length >= 2) {
+    chartWrap.style.display = 'block';
+    const entries = [...state.bodyEntries].reverse().slice(-10);
+    const min = Math.min(...entries.map(e => e.peso));
+    const max = Math.max(...entries.map(e => e.peso));
+    const range = max - min || 1;
+    chartEl.innerHTML = entries.map(e => {
+      const h = Math.max(10, Math.round(((e.peso - min) / range) * 50 + 10));
+      return `<div class="mini-bar" style="background:var(--accent-cuerpo);height:${h}px;opacity:0.75" title="${e.peso}kg ${e.date}"></div>`;
+    }).join('');
+  } else {
+    chartWrap.style.display = 'none';
+  }
+
+  // Peso list
+  const pl = document.getElementById('cpo-peso-list');
+  if (!state.bodyEntries.length) { pl.innerHTML = '<div class="empty">Sin registros de peso aún</div>'; }
+  else {
+    pl.innerHTML = state.bodyEntries.slice(0, 10).map(e => `
+      <div class="list-item">
+        <div class="list-item-left">
+          <div class="list-item-icon" style="background:var(--accent-cuerpo-bg);font-size:1rem">⚖️</div>
+          <div>
+            <div class="list-item-name">${e.peso} kg${e.cintura ? ` · Cintura: ${e.cintura}cm` : ''}${e.pecho ? ` · Pecho: ${e.pecho}cm` : ''}</div>
+            <div class="list-item-sub">${e.date}${e.altura ? ` · ${e.altura}cm` : ''}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // AGUA
+  const vasos = state.waterLog[TODAY] || 0;
+  setText('cpo-agua-hoy', vasos);
+  document.getElementById('cpo-agua-bar').style.width = Math.min(100, (vasos / 8) * 100) + '%';
+  const vasosGrid = document.getElementById('cpo-vasos-grid');
+  vasosGrid.innerHTML = Array.from({length: 8}, (_, i) => `
+    <div style="width:38px;height:48px;border-radius:8px;border:1.5px solid ${i < vasos ? 'var(--accent-hab)' : 'var(--border2)'};background:${i < vasos ? 'var(--accent-hab-bg)' : 'transparent'};display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:all .2s">
+      ${i < vasos ? '💧' : '○'}
+    </div>
+  `).join('');
+
+  // SUEÑO hoy
+  const todaySleep = (state.sleepLog || []).find(s => s.date === TODAY);
+  setText('cpo-sueno-hoy', todaySleep ? todaySleep.hrs : '—');
+  if (todaySleep) {
+    setText('cpo-sueno-calidad', qualityStars[todaySleep.quality] || '—');
+    setText('cpo-sueno-calidad-label', qualityLabels[todaySleep.quality] || '');
+  }
+  const last7sleep = (state.sleepLog || []).slice(0, 7);
+  if (last7sleep.length) {
+    const avg = (last7sleep.reduce((a, s) => a + s.hrs, 0) / last7sleep.length).toFixed(1);
+    setText('cpo-sueno-avg', avg + 'h');
+  }
+
+  const sl = document.getElementById('cpo-sueno-list');
+  if (!state.sleepLog.length) { sl.innerHTML = '<div class="empty">Sin registros de sueño</div>'; }
+  else {
+    sl.innerHTML = state.sleepLog.slice(0, 10).map(s => `
+      <div class="list-item">
+        <div>
+          <div class="list-item-name">${s.hrs}h · ${qualityStars[s.quality]}</div>
+          <div class="list-item-sub">${s.date}${s.nota ? ' · ' + s.nota : ''}</div>
+        </div>
+        <span class="metric-badge badge-blue">${qualityLabels[s.quality]}</span>
+      </div>
+    `).join('');
+  }
+
+  // NUTRICIÓN
+  const goalCal = state.nutGoalCal || 2000;
+  const goalProt = state.nutGoalProt || 120;
+  const todayMeals = state.meals.filter(m => m.date === TODAY);
+  const totalCal = todayMeals.reduce((a, m) => a + m.cal, 0);
+  const totalProt = todayMeals.reduce((a, m) => a + m.prot, 0);
+  setText('cpo-cal-hoy', totalCal);
+  setText('cpo-prot-hoy', totalProt + 'g');
+  setText('cpo-comidas-hoy', todayMeals.length);
+  setText('cpo-cal-meta-label', `meta: ${goalCal} kcal`);
+  setText('cpo-cal-prog-label', `${totalCal} kcal`);
+  setText('cpo-cal-goal-label', `meta: ${goalCal} kcal`);
+  document.getElementById('cpo-cal-bar').style.width = Math.min(100, (totalCal / goalCal) * 100) + '%';
+  if (document.getElementById('nut-goal-cal').value === '') {
+    document.getElementById('nut-goal-cal').placeholder = goalCal;
+    document.getElementById('nut-goal-prot').placeholder = goalProt;
+  }
+
+  const ml = document.getElementById('cpo-meals-list');
+  if (!todayMeals.length) { ml.innerHTML = '<div class="empty">Sin comidas registradas hoy</div>'; }
+  else {
+    ml.innerHTML = todayMeals.map(m => `
+      <div class="list-item">
+        <div class="list-item-left">
+          <div class="list-item-icon" style="background:var(--accent-cuerpo-bg)">${m.time.split(' ')[0]}</div>
+          <div>
+            <div class="list-item-name">${m.desc}</div>
+            <div class="list-item-sub">${m.time} · ${m.cal} kcal · P:${m.prot}g C:${m.carbs}g G:${m.fat}g</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+const relColors = {
+  familia: ['#FFE8D6','#8B4513'], amigo: ['#D8F3DC','#1B4332'],
+  pareja: ['#FDE8E0','#8B2500'], colega: ['#EEF2FF','#3730A3'],
+  mentor: ['#FEF3C7','#78350F']
+};
+const relEmoji = { familia:'👨‍👩‍👧', amigo:'👥', pareja:'❤️', colega:'💼', mentor:'🌟' };
+
+function addContact() {
+  const name = document.getElementById('rel-name').value.trim();
+  const type = document.getElementById('rel-type').value;
+  const note = document.getElementById('rel-note').value.trim();
+  const reminder = document.getElementById('rel-reminder').value;
+  if (!name) return;
+  state.contacts.push({ id: Date.now(), name, type, note, reminder, date: TODAY });
+  save();
+  document.getElementById('rel-name').value = '';
+  document.getElementById('rel-note').value = '';
+  renderRelaciones();
+}
+
+function clearContacts() {
+  if (confirm('¿Borrar todos los contactos?')) { state.contacts = []; save(); renderRelaciones(); }
+}
+
+function addConnectionNote() {
+  const person = document.getElementById('cn-person').value.trim();
+  const note = document.getElementById('cn-note').value.trim();
+  if (!person || !note) return;
+  state.connectionNotes.unshift({ id: Date.now(), person, note, date: TODAY });
+  save();
+  document.getElementById('cn-person').value = '';
+  document.getElementById('cn-note').value = '';
+  renderRelaciones();
+}
+
+function clearConnectionNotes() {
+  if (confirm('¿Borrar todas las notas?')) { state.connectionNotes = []; save(); renderRelaciones(); }
+}
+
+function renderRelaciones() {
+  const list = document.getElementById('rel-list');
+  if (!state.contacts.length) { list.innerHTML = '<div class="empty">Agrega personas importantes para ti</div>'; return; }
+  list.innerHTML = state.contacts.map(c => {
+    const [bg, fg] = relColors[c.type] || ['#f0ece4','#333'];
+    const initials = c.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+    return `
+      <div class="contact-card">
+        <div class="contact-avatar" style="background:${bg};color:${fg}">${initials}</div>
+        <div class="contact-info">
+          <div class="contact-name">${c.name}</div>
+          <div class="contact-note">${c.note || 'Sin notas'}</div>
+          ${c.reminder ? `<div style="font-size:0.72rem;color:var(--text3);margin-top:2px">🔔 ${c.reminder}</div>` : ''}
+        </div>
+        <span class="contact-tag" style="background:${bg};color:${fg}">${relEmoji[c.type]} ${c.type}</span>
+      </div>
+    `;
+  }).join('');
+
+  const cnList = document.getElementById('cn-list');
+  if (!state.connectionNotes.length) { cnList.innerHTML = '<div class="empty">Sin notas de conexión</div>'; return; }
+  cnList.innerHTML = state.connectionNotes.slice(0, 10).map(n => `
+    <div class="journal-entry">
+      <div class="journal-entry-meta">
+        <span class="journal-entry-date">${n.date} · ${n.person}</span>
+      </div>
+      <div class="journal-entry-text">${n.note}</div>
+    </div>
+  `).join('');
+}
+
+// ===== HÁBITOS =====
+const catColors = {
+  ment: 'var(--accent-ment-bg)', ej: 'var(--accent-ej-bg)',
+  fin: 'var(--accent-fin-bg)', rel: 'var(--accent-rel-bg)', gen: 'var(--surface2)'
+};
+
+function addHabit(name, icon, cat) {
+  name = name || document.getElementById('hab-name').value.trim();
+  icon = icon || document.getElementById('hab-icon').value.trim() || '⭐';
+  cat = cat || document.getElementById('hab-cat').value;
+  if (!name) return;
+  state.habits.push({ id: Date.now(), name, icon, cat, created: TODAY });
+  save();
+  if (!name) return;
+  document.getElementById('hab-name').value = '';
+  document.getElementById('hab-icon').value = '';
+  renderHabits();
+  renderOverview();
+}
+
+function addSuggestedHabit(name, icon, cat) {
+  if (state.habits.find(h => h.name === name)) return;
+  state.habits.push({ id: Date.now(), name, icon, cat, created: TODAY });
+  save();
+  renderHabits();
+  renderOverview();
+}
+
+function toggleHabit(id) {
+  if (!state.habitLog[TODAY]) state.habitLog[TODAY] = [];
+  const log = state.habitLog[TODAY];
+  const idx = log.indexOf(id);
+  if (idx >= 0) log.splice(idx, 1);
+  else log.push(id);
+  save();
+  renderHabits();
+  renderOverview();
+}
+
+function clearHabits() {
+  if (confirm('¿Borrar todos los hábitos?')) { state.habits = []; state.habitLog = {}; save(); renderHabits(); renderOverview(); }
+}
+
+function calcHabitStreak() {
+  if (!state.habits.length) return 0;
+  let streak = 0;
+  let d = new Date(TODAY);
+  for (let i = 0; i < 365; i++) {
+    const key = d.toISOString().split('T')[0];
+    const log = state.habitLog[key] || [];
+    if (log.length === state.habits.length && state.habits.length > 0) streak++;
+    else if (i > 0) break;
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
+}
+
+function calcSuccessRate() {
+  if (!state.habits.length) return '—';
+  let total = 0, done = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(TODAY);
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    total += state.habits.length;
+    done += (state.habitLog[key] || []).length;
+  }
+  return total ? Math.round((done / total) * 100) + '%' : '—';
+}
+
+function renderHabits() {
+  const todayLog = state.habitLog[TODAY] || [];
+  setText('hab-today-count', todayLog.length);
+  setText('hab-today-total', `de ${state.habits.length} hábitos`);
+  setText('hab-best-streak', calcHabitStreak());
+  setText('hab-success-rate', calcSuccessRate());
+
+  const grid = document.getElementById('hab-grid');
+  if (!state.habits.length) { grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Crea tu primer hábito</div>'; return; }
+  grid.innerHTML = state.habits.map(h => {
+    const done = todayLog.includes(h.id);
+    const streak = calcSingleStreak(h.id);
+    return `
+      <div class="habit-card ${done ? 'done' : ''}" onclick="toggleHabit(${h.id})" style="${!done ? 'background:'+catColors[h.cat] : ''}">
+        <div class="habit-icon">${h.icon}</div>
+        <div class="habit-name">${h.name}</div>
+        <div class="habit-streak">${streak > 0 ? `🔥 ${streak} días` : 'Toca para marcar'}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function calcSingleStreak(id) {
+  let streak = 0;
+  let d = new Date(TODAY);
+  for (let i = 0; i < 365; i++) {
+    const key = d.toISOString().split('T')[0];
+    if ((state.habitLog[key] || []).includes(id)) streak++;
+    else if (i > 0) break;
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
+}
+
+// ===== OVERVIEW =====
+function renderOverview() {
+  // Finance balance
+  const balance = state.transactions.reduce((a, t) => t.type === 'ingreso' ? a + t.amount : a - t.amount, 0);
+  setText('ov-balance', fmt(balance));
+  document.getElementById('ov-balance').style.color = balance >= 0 ? 'var(--accent-fin)' : 'var(--accent-rel)';
+
+  // Workouts
+  const month = TODAY.substring(0, 7);
+  setText('ov-workouts', state.workouts.filter(w => w.date.startsWith(month)).length);
+
+  // Mood
+  setText('ov-mood', state.todayMood || '—');
+
+  // Cuerpo
+  const latestBody = (state.bodyEntries || [])[0];
+  const vasos = (state.waterLog || {})[TODAY] || 0;
+  setText('ov-peso', latestBody ? `${latestBody.peso}kg` : '—');
+  document.querySelector('#ov-peso')?.nextElementSibling && (document.getElementById('ov-peso').closest('.ov-card').querySelector('.ov-sub').textContent = `${vasos}/8 vasos agua`);
+
+  // Habits
+  const todayLog = state.habitLog[TODAY] || [];
+  setText('ov-habits', `${todayLog.length}/${state.habits.length}`);
+
+  // Quick habits
+  const ohEl = document.getElementById('overviewHabits');
+  if (!state.habits.length) { ohEl.innerHTML = '<div class="empty" style="grid-column:1/-1">Ve a Hábitos para crear los tuyos</div>'; }
+  else {
+    ohEl.innerHTML = state.habits.slice(0, 8).map(h => {
+      const done = todayLog.includes(h.id);
+      return `
+        <div class="habit-card ${done ? 'done' : ''}" onclick="toggleHabit(${h.id})" style="${!done ? 'background:'+catColors[h.cat] : ''}">
+          <div class="habit-icon">${h.icon}</div>
+          <div class="habit-name">${h.name}</div>
+          <div class="habit-streak">${done ? '✓ Hecho' : 'Pendiente'}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Quick transactions
+  const txEl = document.getElementById('overviewTx');
+  if (!state.transactions.length) { txEl.innerHTML = '<div class="empty">Sin movimientos recientes</div>'; }
+  else {
+    txEl.innerHTML = state.transactions.slice(0, 5).map(t => `
+      <div class="list-item">
+        <div class="list-item-left">
+          <div style="font-size:1rem">${t.cat.split(' ')[0]}</div>
+          <div>
+            <div class="list-item-name">${t.desc}</div>
+            <div class="list-item-sub">${t.date}</div>
+          </div>
+        </div>
+        <div style="font-size:0.9rem;font-weight:600;color:${t.type==='ingreso'?'var(--accent-fin)':'var(--accent-rel)'}">
+          ${t.type==='ingreso'?'+':'-'}${fmt(t.amount)}
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+// ===== HELPERS =====
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function fmt(n) {
+  return '$' + Math.abs(n).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// ===== RENDER ALL =====
+function renderAll() {
+  renderFinance();
+  renderExercise();
+  renderJournal();
+  renderMoodHistory();
+  renderMeditation();
+  renderRelaciones();
+  renderHabits();
+  renderCuerpo();
+  renderOverview();
+}
+
+// ===== INIT =====
+load();
+setDate();
+renderAll();
+</script>
+</body>
+</html>

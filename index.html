@@ -1047,6 +1047,62 @@
         <div id="fin-tx-list"></div>
       </div>
     </div>
+
+    <!-- RECURRING TRANSACTIONS -->
+    <div class="card" style="margin-bottom:1.5rem">
+      <div class="flex-between">
+        <h2>Transacciones periódicas</h2>
+        <span id="recurring-next-badge" style="font-size:0.78rem;color:var(--text2)"></span>
+      </div>
+      <div id="fin-recurring-list" style="margin-bottom:1.25rem"></div>
+      <hr class="section-sep" style="margin-top:0">
+      <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:0.75rem">Nueva transacción periódica</div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:flex-end">
+        <div class="form-group" style="flex:2;min-width:140px;margin-bottom:0">
+          <label>Descripción</label>
+          <input type="text" id="rec-desc" placeholder="Ej: Renta, Netflix, Sueldo...">
+        </div>
+        <div class="form-group" style="flex:1;min-width:100px;margin-bottom:0">
+          <label>Monto $</label>
+          <input type="number" id="rec-amount" placeholder="1500">
+        </div>
+        <div class="form-group" style="flex:1;min-width:100px;margin-bottom:0">
+          <label>Tipo</label>
+          <select id="rec-type">
+            <option value="ingreso">+ Ingreso</option>
+            <option value="gasto">− Gasto</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;min-width:110px;margin-bottom:0">
+          <label>Categoría</label>
+          <select id="rec-cat">
+            <option>🛒 Comida</option>
+            <option>🏠 Renta</option>
+            <option>🚗 Transporte</option>
+            <option>💊 Salud</option>
+            <option>🎮 Ocio</option>
+            <option>👔 Trabajo</option>
+            <option>💰 Ingreso</option>
+            <option>📦 Otro</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;min-width:120px;margin-bottom:0">
+          <label>Frecuencia</label>
+          <select id="rec-freq">
+            <option value="diario">📅 Diario</option>
+            <option value="semanal">📅 Semanal</option>
+            <option value="quincenal">📅 Quincenal</option>
+            <option value="mensual" selected>📅 Mensual</option>
+            <option value="anual">📅 Anual</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;min-width:110px;margin-bottom:0">
+          <label>Día del cobro</label>
+          <input type="number" id="rec-day" placeholder="1" min="1" max="31">
+        </div>
+        <button class="btn btn-primary" onclick="addRecurring()" style="padding:10px 20px;white-space:nowrap;min-height:44px">Agregar</button>
+      </div>
+    </div>
   </section>
 
   <!-- ===== EJERCICIO ===== -->
@@ -1708,6 +1764,7 @@ let state = {
   habitLog: {},
   meditationSessions: [],
   meditationMinutes: 0,
+  recurringTx: [],
 };
 
 const TODAY = new Date().toISOString().split('T')[0];
@@ -1772,6 +1829,7 @@ function load() {
         state = { ...state, ...snap.data() };
         renderAll();
       }
+      processRecurring();
       setSyncStatus('ok');
       startRealtimeSync();
     })
@@ -1875,6 +1933,113 @@ function clearTransactions() {
   if (confirm('¿Borrar todas las transacciones?')) { state.transactions = []; save(); renderFinance(); renderOverview(); }
 }
 
+// ===== RECURRING TRANSACTIONS =====
+const freqLabel = { diario:'Diario', semanal:'Semanal', quincenal:'Quincenal', mensual:'Mensual', anual:'Anual' };
+const freqDays  = { diario:1, semanal:7, quincenal:15, mensual:30, anual:365 };
+
+function addRecurring() {
+  const desc   = document.getElementById('rec-desc').value.trim();
+  const amount = parseFloat(document.getElementById('rec-amount').value);
+  const type   = document.getElementById('rec-type').value;
+  const cat    = document.getElementById('rec-cat').value;
+  const freq   = document.getElementById('rec-freq').value;
+  const day    = parseInt(document.getElementById('rec-day').value) || 1;
+  if (!desc || !amount || isNaN(amount)) return;
+  if (!state.recurringTx) state.recurringTx = [];
+  state.recurringTx.push({ id: Date.now(), desc, amount, type, cat, freq, day, lastRun: null, active: true });
+  save();
+  document.getElementById('rec-desc').value = '';
+  document.getElementById('rec-amount').value = '';
+  document.getElementById('rec-day').value = '';
+  processRecurring();
+  renderFinance();
+}
+
+function deleteRecurring(id) {
+  state.recurringTx = (state.recurringTx || []).filter(r => r.id !== id);
+  save(); renderFinance();
+}
+
+function toggleRecurring(id) {
+  const r = (state.recurringTx || []).find(r => r.id === id);
+  if (r) { r.active = !r.active; save(); renderFinance(); }
+}
+
+function processRecurring() {
+  if (!state.recurringTx || !state.recurringTx.length) return;
+  const now = new Date();
+  const todayStr = TODAY;
+  let changed = false;
+
+  state.recurringTx.forEach(r => {
+    if (!r.active) return;
+
+    // Determine if should fire today
+    const shouldFire = (() => {
+      const d = now.getDate();
+      const lastRun = r.lastRun;
+
+      if (r.freq === 'diario') {
+        return lastRun !== todayStr;
+      }
+      if (r.freq === 'semanal') {
+        if (!lastRun) return true;
+        const diff = Math.floor((now - new Date(lastRun)) / 86400000);
+        return diff >= 7;
+      }
+      if (r.freq === 'quincenal') {
+        if (!lastRun) return true;
+        const diff = Math.floor((now - new Date(lastRun)) / 86400000);
+        return diff >= 15;
+      }
+      if (r.freq === 'mensual') {
+        if (!lastRun) return d >= r.day;
+        const last = new Date(lastRun);
+        const sameMonth = last.getMonth() === now.getMonth() && last.getFullYear() === now.getFullYear();
+        return !sameMonth && d >= r.day;
+      }
+      if (r.freq === 'anual') {
+        if (!lastRun) return true;
+        const diff = Math.floor((now - new Date(lastRun)) / 86400000);
+        return diff >= 365;
+      }
+      return false;
+    })();
+
+    if (shouldFire) {
+      state.transactions.unshift({
+        id: Date.now() + Math.random(),
+        desc: r.desc + ' (automático)',
+        amount: r.amount,
+        type: r.type,
+        cat: r.cat,
+        date: todayStr,
+        recurring: true
+      });
+      r.lastRun = todayStr;
+      changed = true;
+    }
+  });
+
+  if (changed) save();
+}
+
+function getNextRunDate(r) {
+  if (!r.active) return '—';
+  if (!r.lastRun) return 'Próximo cobro: hoy';
+  const last = new Date(r.lastRun);
+  const next = new Date(last);
+  if (r.freq === 'diario')     next.setDate(next.getDate() + 1);
+  if (r.freq === 'semanal')    next.setDate(next.getDate() + 7);
+  if (r.freq === 'quincenal')  next.setDate(next.getDate() + 15);
+  if (r.freq === 'mensual')  { next.setMonth(next.getMonth() + 1); next.setDate(r.day); }
+  if (r.freq === 'anual')      next.setFullYear(next.getFullYear() + 1);
+  const diff = Math.ceil((next - new Date()) / 86400000);
+  if (diff <= 0) return 'Hoy';
+  if (diff === 1) return 'Mañana';
+  return `En ${diff} días`;
+}
+
 function addGoal() {
   const name = document.getElementById('goal-name').value.trim();
   const target = parseFloat(document.getElementById('goal-target').value);
@@ -1974,6 +2139,38 @@ function renderFinance() {
           </div>
         `;
       }).join('') + '</div>';
+  }
+  // RECURRING LIST
+  const recList = document.getElementById('fin-recurring-list');
+  if (recList) {
+    const recs = state.recurringTx || [];
+    if (!recs.length) {
+      recList.innerHTML = '<div class="empty">Sin transacciones periódicas. Agrégalas abajo.</div>';
+      setText('recurring-next-badge', '');
+    } else {
+      const monthlyNet = recs.filter(r => r.active && r.freq === 'mensual')
+        .reduce((a, r) => r.type === 'ingreso' ? a + r.amount : a - r.amount, 0);
+      setText('recurring-next-badge', monthlyNet !== 0 ? `Balance mensual fijo: ${monthlyNet >= 0 ? '+' : ''}${fmt(monthlyNet)}` : '');
+      recList.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0.75rem">` +
+        recs.map(r => `
+          <div style="display:flex;align-items:center;gap:10px;padding:12px;background:var(--bg);border-radius:var(--radius-sm);border:1px solid ${r.active ? 'var(--border)' : 'var(--border)'};opacity:${r.active ? 1 : 0.5}">
+            <div style="width:36px;height:36px;border-radius:10px;background:${r.type==='ingreso'?'var(--accent-fin-bg)':'var(--accent-rel-bg)'};display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">
+              ${r.cat.split(' ')[0]}
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:0.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.desc}</div>
+              <div style="font-size:0.72rem;color:var(--text2)">${freqLabel[r.freq]} · día ${r.day || '—'} · ${getNextRunDate(r)}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-size:0.9rem;font-weight:700;color:${r.type==='ingreso'?'var(--accent-fin)':'var(--accent-rel)'}">${r.type==='ingreso'?'+':'-'}${fmt(r.amount)}</div>
+              <div style="display:flex;gap:4px;margin-top:4px">
+                <button onclick="toggleRecurring(${r.id})" style="font-size:0.68rem;padding:2px 7px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer">${r.active ? '⏸' : '▶'}</button>
+                <button onclick="deleteRecurring(${r.id})" style="font-size:0.68rem;padding:2px 7px;border-radius:6px;border:1px solid var(--accent-rel-bg);background:transparent;color:var(--accent-rel);cursor:pointer">✕</button>
+              </div>
+            </div>
+          </div>
+        `).join('') + '</div>';
+    }
   }
 }
 
